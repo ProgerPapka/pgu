@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="QueryOrderService" targetNamespace="http://epgu.gosuslugi.ru/lk/subscribe/" xmlns:smev="http://smev.gosuslugi.ru/rev120315" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://epgu.gosuslugi.ru/lk/subscribe/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <wsdl:types>
+        <xsd:schema xmlns:smev="http://smev.gosuslugi.ru/rev120315" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://epgu.gosuslugi.ru/lk/subscribe/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://epgu.gosuslugi.ru/lk/common/types/" schemaLocation="http://pgu-uat-fednlb.test.gosuslugi.ru/smev-lk-service/ws/ElkSubscribeService?xsd=../types/Error.xsd"/>
+            <xsd:import namespace="http://epgu.gosuslugi.ru/lk/subscribe/types/ElkSubscribeServiceTypes/" schemaLocation="http://pgu-uat-fednlb.test.gosuslugi.ru/smev-lk-service/ws/ElkSubscribeService?xsd=../types/ElkSubscribeServiceTypes.xsd"/>
+            <xsd:import namespace="http://smev.gosuslugi.ru/rev120315" schemaLocation="http://pgu-uat-fednlb.test.gosuslugi.ru/smev-lk-service/ws/ElkSubscribeService?xsd=../types/smev.gosuslugi.ru.rev120315.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="processRequest">
+        <wsdl:part element="smev:Header" name="smevHeader">
+        </wsdl:part>
+        <wsdl:part element="smev:BaseMessage" name="processRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="processResponse">
+        <wsdl:part element="smev:BaseMessage" name="processResponse">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="ElkSubscribeService">
+        <wsdl:operation name="process">
+            <wsdl:input message="tns:processRequest" name="processRequest">
+            </wsdl:input>
+            <wsdl:output message="tns:processResponse" name="processResponse">
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="ElkSubscribeServiceBinding" type="tns:ElkSubscribeService">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="process">
+            <soap:operation soapAction="http://epgu.gosuslugi.ru/lk/ElkSubscribeService/process" style="document"/>
+            <wsdl:input name="processRequest">
+                <soap:header message="tns:processRequest" part="smevHeader" use="literal" wsdl:required="false">
+                </soap:header>
+                <soap:body parts="processRequest" use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="processResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="ElkSubscribeService">
+        <wsdl:port binding="tns:ElkSubscribeServiceBinding" name="ElkSubscribeService">
+            <soap:address location="http://pgu-uat-fednlb.test.gosuslugi.ru/smev-lk-service/ws/ElkSubscribeService"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="CreateOrderService" targetNamespace="http://gosuslugi.ru/epguapi/ws/v25/" xmlns:cos="http://gosuslugi.ru/epguapi/ws/v25/" xmlns:smev="http://smev.gosuslugi.ru/rev120315" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://gosuslugi.ru/epguapi/ws/v25/" xmlns:cos="http://gosuslugi.ru/epguapi/ws/v25/" xmlns:smev="http://smev.gosuslugi.ru/rev120315" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://smev.gosuslugi.ru/rev120315" schemaLocation="tmp.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="createOrdersResponse">
+        <wsdl:part element="smev:BaseMessage" name="createOrdersResponse">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="createOrdersRequest">
+        <wsdl:part element="smev:Header" name="smevHeader">
+        </wsdl:part>
+        <wsdl:part element="smev:BaseMessage" name="createOrdersRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="createOrderRequest">
+        <wsdl:part element="smev:Header" name="smevHeader">
+        </wsdl:part>
+        <wsdl:part element="smev:BaseMessage" name="createOrderRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="uploadFilesResponse">
+        <wsdl:part element="smev:BaseMessage" name="uploadFilesResponse">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="deleteOrdersResponse">
+        <wsdl:part element="smev:BaseMessage" name="deleteOrdersResponse">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="updateOrdersResponse">
+        <wsdl:part element="smev:BaseMessage" name="updateOrdersResponse">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="deleteOrdersRequest">
+        <wsdl:part element="smev:Header" name="smevHeader">
+        </wsdl:part>
+        <wsdl:part element="smev:BaseMessage" name="deleteOrdersRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="updateOrdersRequest">
+        <wsdl:part element="smev:Header" name="smevHeader">
+        </wsdl:part>
+        <wsdl:part element="smev:BaseMessage" name="updateOrdersRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="createOrderResponse">
+        <wsdl:part element="smev:BaseMessage" name="createOrderResponse">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="uploadFilesRequest">
+        <wsdl:part element="smev:Header" name="smevHeader">
+        </wsdl:part>
+        <wsdl:part element="smev:BaseMessage" name="uploadFilesRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="CreateOrderService">
+        <wsdl:operation name="createOrder">
+            <wsdl:input message="cos:createOrderRequest">
+            </wsdl:input>
+            <wsdl:output message="cos:createOrderResponse">
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createOrders">
+            <wsdl:input message="cos:createOrdersRequest">
+            </wsdl:input>
+            <wsdl:output message="cos:createOrdersResponse">
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="updateOrders">
+            <wsdl:input message="cos:updateOrdersRequest">
+            </wsdl:input>
+            <wsdl:output message="cos:updateOrdersResponse">
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="deleteOrders">
+            <wsdl:input message="cos:deleteOrdersRequest">
+            </wsdl:input>
+            <wsdl:output message="cos:deleteOrdersResponse">
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="uploadFiles">
+            <wsdl:input message="cos:uploadFilesRequest">
+            </wsdl:input>
+            <wsdl:output message="cos:uploadFilesResponse">
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="CreateOrderServiceBinding" type="cos:CreateOrderService">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="createOrder">
+            <soap:operation soapAction="createOrder" style="document"/>
+            <wsdl:input>
+                <soap:header message="cos:createOrderRequest" part="smevHeader" use="literal" wsdl:required="false">
+                </soap:header>
+                <soap:body parts="createOrderRequest" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createOrders">
+            <soap:operation soapAction="createOrders" style="document"/>
+            <wsdl:input>
+                <soap:header message="cos:createOrdersRequest" part="smevHeader" use="literal" wsdl:required="false">
+                </soap:header>
+                <soap:body parts="createOrdersRequest" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="updateOrders">
+            <soap:operation soapAction="updateOrders" style="document"/>
+            <wsdl:input>
+                <soap:header message="cos:updateOrdersRequest" part="smevHeader" use="literal" wsdl:required="false">
+                </soap:header>
+                <soap:body parts="updateOrdersRequest" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="deleteOrders">
+            <soap:operation soapAction="deleteOrders" style="document"/>
+            <wsdl:input>
+                <soap:header message="cos:deleteOrdersRequest" part="smevHeader" use="literal" wsdl:required="false">
+                </soap:header>
+                <soap:body parts="deleteOrdersRequest" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="uploadFiles">
+            <soap:operation soapAction="uploadFiles" style="document"/>
+            <wsdl:input>
+                <soap:header message="cos:uploadFilesRequest" part="smevHeader" use="literal" wsdl:required="false">
+                </soap:header>
+                <soap:body parts="uploadFilesRequest" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="CreateOrderService">
+        <wsdl:port binding="cos:CreateOrderServiceBinding" name="CreateOrderService">
+            <soap:address location="http://pgu-uat-fednlb.test.gosuslugi.ru/smev-lk-service/ws/CreateOrderService"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

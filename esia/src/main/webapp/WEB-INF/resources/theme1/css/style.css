@@ -1,0 +1,12 @@
+h1{
+    margin: auto;
+}
+
+form{
+    margin: auto;
+}
+input{
+    background: lightskyblue;
+    color: black;
+    font-weight: bold;
+}
