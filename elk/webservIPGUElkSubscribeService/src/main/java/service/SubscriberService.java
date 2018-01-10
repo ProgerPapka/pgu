@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 
 public interface SubscriberService {
 
-    void subscribeToGetData(String token, LocalDateTime timestamp);
+    boolean subscribeToGetData(String token, LocalDateTime timestamp);
 
-    void unsubscribeToGetData(String token);
+    boolean unsubscribeToGetData(String token);
 
 }

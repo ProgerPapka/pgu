@@ -2,6 +2,7 @@ package service;
 
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import wsdl.gosuslugi.epgu.lk.common.types.Error;
 import wsdl.gosuslugi.epgu.lk.subscribe.types.elksubscribeservicetypes.SubscribeRequest;
 import wsdl.gosuslugi.epgu.lk.subscribe.types.elksubscribeservicetypes.UnsubscribeRequest;
 import wsdl.gosuslugi.smev.rev120315.*;
@@ -16,17 +17,22 @@ public class SubscriberServiceImpl implements SubscriberService {
     private ElkSubscribeService service;
 
     @Override
-    public void subscribeToGetData(String token, LocalDateTime timestamp) {
+    public boolean subscribeToGetData(String token, LocalDateTime timestamp) {
         HeaderType header = new HeaderType(); //никакой информации об этом объекте нет
         BaseMessageType baseMessage = initBaseMessageTypeToSubscrb(token, timestamp);
         BaseMessageType response = service.process(header, baseMessage);//TODO response проверить
+        AppDataType dataResponse = response.getMessageData().getAppData();
+        Error error = (Error) dataResponse.getAny().get(0);
+        return error.getErrorCode() == 0;
     }
 
     @Override
-    public void unsubscribeToGetData(String token) {
+    public boolean unsubscribeToGetData(String token) {
         HeaderType header = new HeaderType();
         BaseMessageType baseMessage = initBaseMessageTypeToUnsubcrb(token);
         BaseMessageType response = service.process(header, baseMessage);//TODO соответстуещие хэдэр и тело xml
+        Error error = (Error) response.getMessageData().getAppData().getAny().get(0);
+        return error.getErrorCode() == 0;
     }
 
     private BaseMessageType initBaseMessageTypeToUnsubcrb(String token) {
