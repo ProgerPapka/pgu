@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="QueryOrderService" targetNamespace="http://epgu.gosuslugi.ru/lk/subscribe/" xmlns:smev="http://smev.gosuslugi.ru/rev120315" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://epgu.gosuslugi.ru/lk/subscribe/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <wsdl:types>
         <xsd:schema xmlns:smev="http://smev.gosuslugi.ru/rev120315" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://epgu.gosuslugi.ru/lk/subscribe/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-            <xsd:import namespace="http://epgu.gosuslugi.ru/lk/common/types/" schemaLocation="http://pgu-uat-fednlb.test.gosuslugi.ru/smev-lk-service/ws/ElkSubscribeService?xsd=../types/Error.xsd"/>
-            <xsd:import namespace="http://epgu.gosuslugi.ru/lk/subscribe/types/ElkSubscribeServiceTypes/" schemaLocation="http://pgu-uat-fednlb.test.gosuslugi.ru/smev-lk-service/ws/ElkSubscribeService?xsd=../types/ElkSubscribeServiceTypes.xsd"/>
-            <xsd:import namespace="http://smev.gosuslugi.ru/rev120315" schemaLocation="http://pgu-uat-fednlb.test.gosuslugi.ru/smev-lk-service/ws/ElkSubscribeService?xsd=../types/smev.gosuslugi.ru.rev120315.xsd"/>
+            <xsd:import namespace="http://epgu.gosuslugi.ru/lk/common/types/" schemaLocation="error.xsd"/>
+            <xsd:import namespace="http://epgu.gosuslugi.ru/lk/subscribe/types/ElkSubscribeServiceTypes/" schemaLocation="elksubscrserv.xsd"/>
+            <xsd:import namespace="http://smev.gosuslugi.ru/rev120315" schemaLocation="rev120315.xsd"/>
         </xsd:schema>
     </wsdl:types>
     <wsdl:message name="processRequest">

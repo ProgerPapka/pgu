@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?><schema targetNamespace="http://epgu.gosuslugi.ru/lk/subscribe/types/ElkSubscribeServiceTypes/" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:import namespace="http://epgu.gosuslugi.ru/lk/common/types/" schemaLocation="error.xsd"/>
+
+    <xs:element name="SubscribeRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="token" type="xs:string"/>
+                <xs:element minOccurs="0" name="sinceTime" type="xs:dateTime"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="UnsubscribeRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="token" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</schema>
