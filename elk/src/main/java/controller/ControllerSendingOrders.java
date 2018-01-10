@@ -1,10 +1,11 @@
 package controller;
 
 import data.EsiaUser;
-import data.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import service.ServiceSendingDataToELK;
+import wsdl.gosuslugi.lk.elk.types.Order;
+import wsdl.gosuslugi.lk.elk.types.UpdateOrder;
 
 import java.io.File;
 import java.util.Collections;
@@ -22,16 +23,16 @@ public class ControllerSendingOrders {
      * Передача заявлений в ЕЛК
      */
     public void sendDataAboutOrders(){
-        List<Order> orderList = Collections.emptyList(); //TODO получить заявки(вместе со всеми статусами) по пользователю с базы
-        serviceSendingDataToELK.sendOrders(user.getId(),orderList);
+        List<Order> orderList = Collections.emptyList(); //TODO получить заявки(вместе со всеми статусами) по пользователю с базы и сконвертировать
+        serviceSendingDataToELK.sendOrders(orderList);
     }
 
     /**
      * Передача статусов по заявлениям в ЕЛК
      */
     public void sendStatusesAboutOrders(){
-        List<Order> orders = Collections.emptyList(); //TODO статусы по заявлениям взять с базы
-        serviceSendingDataToELK.updateOrders(user.getId(),orders);
+        List<UpdateOrder> orders = Collections.emptyList(); //TODO статусы по заявлениям взять с базы и сконвертировать
+        serviceSendingDataToELK.updateOrders(orders);
     }
 
     /**

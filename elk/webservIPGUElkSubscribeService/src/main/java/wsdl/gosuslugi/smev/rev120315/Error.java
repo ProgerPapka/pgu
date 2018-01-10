@@ -25,8 +25,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="errorCode" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="errorMessage" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="message" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -48,7 +48,7 @@ public class Error {
     protected String errorMessage;
 
     /**
-     * Gets the value of the errorCode property.
+     * Gets the value of the code property.
      * 
      */
     public long getErrorCode() {
@@ -56,7 +56,7 @@ public class Error {
     }
 
     /**
-     * Sets the value of the errorCode property.
+     * Sets the value of the code property.
      * 
      */
     public void setErrorCode(long value) {
@@ -64,7 +64,7 @@ public class Error {
     }
 
     /**
-     * Gets the value of the errorMessage property.
+     * Gets the value of the message property.
      * 
      * @return
      *     possible object is
@@ -76,7 +76,7 @@ public class Error {
     }
 
     /**
-     * Sets the value of the errorMessage property.
+     * Sets the value of the message property.
      * 
      * @param value
      *     allowed object is

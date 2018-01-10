@@ -49,7 +49,7 @@ public class Error {
     protected String errorMessage;
 
     /**
-     * Gets the value of the errorCode property.
+     * Gets the value of the code property.
      * 
      */
     public long getErrorCode() {
@@ -57,7 +57,7 @@ public class Error {
     }
 
     /**
-     * Sets the value of the errorCode property.
+     * Sets the value of the code property.
      * 
      */
     public void setErrorCode(long value) {
@@ -65,7 +65,7 @@ public class Error {
     }
 
     /**
-     * Gets the value of the errorMessage property.
+     * Gets the value of the message property.
      * 
      * @return
      *     possible object is
@@ -77,7 +77,7 @@ public class Error {
     }
 
     /**
-     * Sets the value of the errorMessage property.
+     * Sets the value of the message property.
      * 
      * @param value
      *     allowed object is
