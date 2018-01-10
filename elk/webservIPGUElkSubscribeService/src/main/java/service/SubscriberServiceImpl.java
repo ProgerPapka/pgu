@@ -20,7 +20,7 @@ public class SubscriberServiceImpl implements SubscriberService {
     public boolean subscribeToGetData(String token, LocalDateTime timestamp) {
         HeaderType header = new HeaderType(); //никакой информации об этом объекте нет
         BaseMessageType baseMessage = initBaseMessageTypeToSubscrb(token, timestamp);
-        BaseMessageType response = service.process(header, baseMessage);//TODO response проверить
+        BaseMessageType response = service.process(header, baseMessage);
         AppDataType dataResponse = response.getMessageData().getAppData();
         Error error = (Error) dataResponse.getAny().get(0);
         return error.getErrorCode() == 0;
@@ -30,7 +30,7 @@ public class SubscriberServiceImpl implements SubscriberService {
     public boolean unsubscribeToGetData(String token) {
         HeaderType header = new HeaderType();
         BaseMessageType baseMessage = initBaseMessageTypeToUnsubcrb(token);
-        BaseMessageType response = service.process(header, baseMessage);//TODO соответстуещие хэдэр и тело xml
+        BaseMessageType response = service.process(header, baseMessage);
         Error error = (Error) response.getMessageData().getAppData().getAny().get(0);
         return error.getErrorCode() == 0;
     }
