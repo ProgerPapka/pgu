@@ -14,6 +14,6 @@ public interface ServiceSendingDataToELK {
 
     void updateOrders(List<UpdateOrder> orders);
 
-    void sendFilesByOrders(List<File> files);
+    void sendFilesByOrders(List<String> nameFiles, String elkNumber, String statusExtId);
 
 }

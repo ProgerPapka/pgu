@@ -10,6 +10,8 @@ import service.ServiceSendingDataToELK;
 import service.ServiceSendingDataToELKImpl;
 import service.SubscriberService;
 import service.SubscriberServiceImpl;
+import wsdl.CreateOrderService;
+import wsdl.CreateOrderService_Service;
 
 @Configuration
 public class Config {
@@ -35,5 +37,10 @@ public class Config {
         return new SubscribeController();
     }
 
+    @Bean
+    CreateOrderService initConnectToService(){
+        CreateOrderService_Service createOrderService_service = new CreateOrderService_Service();
+        return createOrderService_service.getCreateOrderService();
+    }
 
 }
