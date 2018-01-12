@@ -60,7 +60,7 @@ public class MessageDataType {
 
     /**
      * Sets the value of the appData property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link AppDataType }
