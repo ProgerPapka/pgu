@@ -29,7 +29,8 @@ public interface ElkSyncService {
             targetNamespace = "http://smev.gosuslugi.ru/rev120315",
             partName = "createOrdersResponse"
     )
-    BaseMessageType createOrders(@WebParam(name = "Header",targetNamespace = "http://smev.gosuslugi.ru/rev120315",header = true,partName = "smevHeader") HeaderType var1, @WebParam(name = "BaseMessage",targetNamespace = "http://smev.gosuslugi.ru/rev120315",partName = "createOrdersRequest") BaseMessageType var2);
+    BaseMessageType createOrders(@WebParam(name = "Header", targetNamespace = "http://smev.gosuslugi.ru/rev120315", header = true, partName = "smevHeader") HeaderType var1,
+                                 @WebParam(name = "BaseMessage", targetNamespace = "http://smev.gosuslugi.ru/rev120315", partName = "createOrdersRequest") BaseMessageType var2);
 
     @WebMethod(
             action = "updateOrders"
@@ -39,7 +40,8 @@ public interface ElkSyncService {
             targetNamespace = "http://smev.gosuslugi.ru/rev120315",
             partName = "updateOrdersResponse"
     )
-    BaseMessageType updateOrders(@WebParam(name = "Header",targetNamespace = "http://smev.gosuslugi.ru/rev120315",header = true,partName = "smevHeader") HeaderType var1, @WebParam(name = "BaseMessage",targetNamespace = "http://smev.gosuslugi.ru/rev120315",partName = "updateOrdersRequest") BaseMessageType var2);
+    BaseMessageType updateOrders(@WebParam(name = "Header", targetNamespace = "http://smev.gosuslugi.ru/rev120315", header = true, partName = "smevHeader") HeaderType var1,
+                                 @WebParam(name = "BaseMessage", targetNamespace = "http://smev.gosuslugi.ru/rev120315", partName = "updateOrdersRequest") BaseMessageType var2);
 
     @WebMethod(
             action = "deleteOrders"
@@ -49,7 +51,8 @@ public interface ElkSyncService {
             targetNamespace = "http://smev.gosuslugi.ru/rev120315",
             partName = "deleteOrdersResponse"
     )
-    BaseMessageType deleteOrders(@WebParam(name = "Header",targetNamespace = "http://smev.gosuslugi.ru/rev120315",header = true,partName = "smevHeader") HeaderType var1, @WebParam(name = "BaseMessage",targetNamespace = "http://smev.gosuslugi.ru/rev120315",partName = "deleteOrdersRequest") BaseMessageType var2);
+    BaseMessageType deleteOrders(@WebParam(name = "Header", targetNamespace = "http://smev.gosuslugi.ru/rev120315", header = true, partName = "smevHeader") HeaderType var1,
+                                 @WebParam(name = "BaseMessage", targetNamespace = "http://smev.gosuslugi.ru/rev120315", partName = "deleteOrdersRequest") BaseMessageType var2);
 
     @WebMethod(
             action = "createInvitations"
@@ -59,7 +62,8 @@ public interface ElkSyncService {
             targetNamespace = "http://smev.gosuslugi.ru/rev120315",
             partName = "createInvitationsResponse"
     )
-    BaseMessageType createInvitations(@WebParam(name = "Header",targetNamespace = "http://smev.gosuslugi.ru/rev120315",header = true,partName = "smevHeader") HeaderType var1, @WebParam(name = "BaseMessage",targetNamespace = "http://smev.gosuslugi.ru/rev120315",partName = "createInvitationsRequest") BaseMessageType var2);
+    BaseMessageType createInvitations(@WebParam(name = "Header", targetNamespace = "http://smev.gosuslugi.ru/rev120315", header = true, partName = "smevHeader") HeaderType var1,
+                                      @WebParam(name = "BaseMessage", targetNamespace = "http://smev.gosuslugi.ru/rev120315", partName = "createInvitationsRequest") BaseMessageType var2);
 
 
     @WebMethod(
@@ -70,7 +74,8 @@ public interface ElkSyncService {
             targetNamespace = "http://smev.gosuslugi.ru/rev120315",
             partName = "updateInvitationsResponse"
     )
-    BaseMessageType updateInvitations(@WebParam(name = "Header",targetNamespace = "http://smev.gosuslugi.ru/rev120315",header = true,partName = "smevHeader") HeaderType var1, @WebParam(name = "BaseMessage",targetNamespace = "http://smev.gosuslugi.ru/rev120315",partName = "updateInvitationsRequest") BaseMessageType var2);
+    BaseMessageType updateInvitations(@WebParam(name = "Header", targetNamespace = "http://smev.gosuslugi.ru/rev120315", header = true, partName = "smevHeader") HeaderType var1,
+                                      @WebParam(name = "BaseMessage", targetNamespace = "http://smev.gosuslugi.ru/rev120315", partName = "updateInvitationsRequest") BaseMessageType var2);
 
 
     @WebMethod(
@@ -81,7 +86,8 @@ public interface ElkSyncService {
             targetNamespace = "http://smev.gosuslugi.ru/rev120315",
             partName = "createPaymentsResponse"
     )
-    BaseMessageType createPayments(@WebParam(name = "Header",targetNamespace = "http://smev.gosuslugi.ru/rev120315",header = true,partName = "smevHeader") HeaderType var1, @WebParam(name = "BaseMessage",targetNamespace = "http://smev.gosuslugi.ru/rev120315",partName = "createPaymentsRequest") BaseMessageType var2);
+    BaseMessageType createPayments(@WebParam(name = "Header", targetNamespace = "http://smev.gosuslugi.ru/rev120315", header = true, partName = "smevHeader") HeaderType var1,
+                                   @WebParam(name = "BaseMessage", targetNamespace = "http://smev.gosuslugi.ru/rev120315", partName = "createPaymentsRequest") BaseMessageType var2);
 
 
 }

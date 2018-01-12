@@ -5,10 +5,14 @@ import wsdl.lk.elk.types.*;
 import wsdl.lk.elk.types.ObjectFactory;
 import wsdl.smev.*;
 
+import javax.jws.WebService;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.Collections;
 import java.util.List;
 
+@WebService(
+        endpointInterface = "service.ElkSyncService"
+)
 public class ElkSyncServiceImpl implements ElkSyncService {
 
     @Autowired
