@@ -4,6 +4,7 @@ import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import wsdl.*;
+import wsdl.ObjectFactory;
 import wsdl.generated.ArchiveDescription;
 import wsdl.generated.FileDescription;
 import wsdl.generated.FileDescriptions;
@@ -27,11 +28,16 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
     private CreateOrderService service;
     @Autowired
     private ArchiveUtil archiveUtil;
+    @Autowired
+    private ObjectFactory objectFactorySmev;
+    @Autowired
+    private wsdl.gosuslugi.lk.elk.types.ObjectFactory objectFactoryElk;
+    private wsdl.generated.ObjectFactory objectFactoryArchive;
 
     @Override
     public void sendOrders(List<Order> orders) {
         BaseMessageType baseMessageType = initBaseMessageToSendOrders(orders);
-        BaseMessageType response = service.createOrders(new HeaderType(), baseMessageType);
+        BaseMessageType response = service.createOrders(objectFactorySmev.createHeaderType(), baseMessageType);
         //TODO переписать правильно проверку ответа. xsd нет!
         Error error = (Error) response.getMessageData().getAppData().getAny().get(0);
         if (error.getCode() == 0) {
@@ -52,7 +58,7 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
     @Override
     public void deleteOrders(List<String> ordersNumber) {
         BaseMessageType baseMessageType = initBaseMessageToDeleteOrders(ordersNumber);
-        BaseMessageType response = service.deleteOrders(new HeaderType(), baseMessageType);
+        BaseMessageType response = service.deleteOrders(objectFactorySmev.createHeaderType(), baseMessageType);
         //TODO переписать правильно проверку ответа. xsd нет!
         ErrorDelete error = (ErrorDelete) response.getMessageData().getAppData().getAny().get(0);
         if (error.getCode() == 0) {
@@ -68,7 +74,7 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
     @Override
     public void updateOrders(List<UpdateOrder> orders) {
         BaseMessageType baseMessageType = initBaseMessageToUpdateOrders(orders);
-        BaseMessageType response = service.updateOrders(new HeaderType(), baseMessageType);
+        BaseMessageType response = service.updateOrders(objectFactorySmev.createHeaderType(), baseMessageType);
         //TODO переписать правильно проверку ответа. xsd нет!
         Error error = (Error) response.getMessageData().getAppData().getAny().get(0);
         if (error.getCode() == 0) {
@@ -84,7 +90,7 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
     @Override
     public void sendFilesByOrders(List<String> files, String elkNumber, String statusExtId) {
         BaseMessageType baseMessageType = initBaseMessageToUploadFiles(files, elkNumber, statusExtId);
-        BaseMessageType response = service.uploadFiles(new HeaderType(), baseMessageType);
+        BaseMessageType response = service.uploadFiles(objectFactorySmev.createHeaderType(), baseMessageType);
         //TODO переписать правильно проверку ответа
         Error error = (Error) response.getMessageData().getAppData().getAny().get(0);
         if (error.getCode() == 0) {
@@ -94,26 +100,26 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
 
     private BaseMessageType initBaseMessageToUploadFiles(List<String> nameFiles,
                                                          String elkNumber, String statusExtId) {
-        UploadFiles uploadFiles = new UploadFiles();
+        UploadFiles uploadFiles = objectFactoryElk.createUploadFiles();
         uploadFiles.setElkOrderNumber(elkNumber);
         uploadFiles.setStatusExtId(statusExtId);
-        AppDataType appDataType = new AppDataType();
+        AppDataType appDataType = objectFactorySmev.createAppDataType();
         appDataType.getAny().add(uploadFiles);
-        AppDocumentType documentType = new AppDocumentType();
+        AppDocumentType documentType = objectFactorySmev.createAppDocumentType();
         documentType.setBinaryData(
                 archiveUtil.generateArchive(
                         nameFiles,
-                        initXmlForArchive(nameFiles,"application/pdf", "archive-description.xml")
+                        initXmlForArchive(nameFiles, "application/pdf", "archive-description.xml")
                 )
         );
         return initBaseMessageType(appDataType, documentType);
     }
 
     private File initXmlForArchive(List<String> nameFile, String typeFiles, String filePath) {
-        ArchiveDescription archiveDescription = new ArchiveDescription();
-        FileDescriptions fileDescriptions = new FileDescriptions();
+        ArchiveDescription archiveDescription = objectFactoryArchive.createArchiveDescription();
+        FileDescriptions fileDescriptions = objectFactoryArchive.createFileDescriptions();
         for (String file : nameFile) {
-            FileDescription description = new FileDescription();
+            FileDescription description = objectFactoryArchive.createFileDescription();
             description.setName(file);
             description.setContentType(typeFiles);
             fileDescriptions.getFileDescription().add(description);
@@ -124,7 +130,7 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                logger.error("Error creation xml file",e);
+                logger.error("Error creation xml file", e);
             }
         }
         try {
@@ -132,42 +138,42 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
             Marshaller marshaller = context.createMarshaller();
             marshaller.marshal(archiveDescription, file);
         } catch (JAXBException e) {
-            logger.error("JAXB error at marshal",e);
+            logger.error("JAXB error at marshal", e);
         }
 
         return file;
     }
 
     private BaseMessageType initBaseMessageToDeleteOrders(List<String> ordersNumbers) {
-        DeleteOrdersRequest deleteOrdersRequest = new DeleteOrdersRequest();
+        DeleteOrdersRequest deleteOrdersRequest = objectFactoryElk.createDeleteOrdersRequest();
         for (String orderNum : ordersNumbers) {
             deleteOrdersRequest.getElkOrderNumber().add(orderNum);
         }
-        AppDataType appDataType = new AppDataType();
+        AppDataType appDataType = objectFactorySmev.createAppDataType();
         appDataType.getAny().add(deleteOrdersRequest);
         return initBaseMessageType(appDataType);
     }
 
     private BaseMessageType initBaseMessageToUpdateOrders(List<UpdateOrder> orders) {
-        UpdateOrdersRequest ordersRequest = new UpdateOrdersRequest();
-        UpdateOrders updateOrders = new UpdateOrders();
+        UpdateOrdersRequest ordersRequest = objectFactoryElk.createUpdateOrdersRequest();
+        UpdateOrders updateOrders = objectFactoryElk.createUpdateOrders();
         for (UpdateOrder order : orders) {
             updateOrders.getOrder().add(order);
         }
         ordersRequest.setOrders(updateOrders);
-        AppDataType appDataType = new AppDataType();
+        AppDataType appDataType = objectFactorySmev.createAppDataType();
         appDataType.getAny().add(ordersRequest);
         return initBaseMessageType(appDataType);
     }
 
     private BaseMessageType initBaseMessageToSendOrders(List<Order> orders) {
-        CreateOrdersRequest ordersRequest = new CreateOrdersRequest();
-        Orders createOrders = new Orders();
+        CreateOrdersRequest ordersRequest = objectFactoryElk.createCreateOrdersRequest();
+        Orders createOrders = objectFactoryElk.createCreateOrders();
         for (Order order : orders) {
             createOrders.getOrder().add(order);
         }
         ordersRequest.setOrders(createOrders);
-        AppDataType appDataType = new AppDataType();
+        AppDataType appDataType = objectFactorySmev.createAppDataType();
         appDataType.getAny().add(ordersRequest);
         return initBaseMessageType(appDataType);
     }
@@ -178,7 +184,7 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
 
     private BaseMessageType initBaseMessageType(AppDataType appDataType,
                                                 AppDocumentType documentType) {
-        BaseMessageType baseMessage = new BaseMessageType();
+        BaseMessageType baseMessage = objectFactorySmev.createBaseMessageType();
         //message type
         String senderCode = "IPGU01001"; //эти данные взяты с примера запроса
         String senderName = "ЕПГУ";
@@ -187,9 +193,9 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
         String originatorCode = "IPGU01001";
         String originatorName = "ЕПГУ";
         String serviceName = "ElkSubscribeServiceV25";
-        OrgExternalType sender = new OrgExternalType();
-        OrgExternalType recipient = new OrgExternalType();
-        OrgExternalType originator = new OrgExternalType();
+        OrgExternalType sender = objectFactorySmev.createOrgExternalType();
+        OrgExternalType recipient = objectFactorySmev.createOrgExternalType();
+        OrgExternalType originator = objectFactorySmev.createOrgExternalType();
         LocalDateTime dateTime = LocalDateTime.now();
         XMLGregorianCalendar calendar = XMLGregorianCalendarImpl.createDateTime(
                 dateTime.getYear(),
@@ -199,7 +205,7 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
                 dateTime.getMinute(),
                 dateTime.getSecond()
         );
-        MessageType messageType = new MessageType();
+        MessageType messageType = objectFactorySmev.createMessageType();
         sender.setCode(senderCode);
         sender.setName(senderName);
         messageType.setSender(sender);
@@ -216,7 +222,7 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
         messageType.setExchangeType("1");
         baseMessage.setMessage(messageType);
         //message data
-        MessageDataType messageData = new MessageDataType();
+        MessageDataType messageData = objectFactorySmev.createMessageDataType();
         messageData.setAppData(appDataType);
         messageData.setAppDocument(documentType);
         baseMessage.setMessageData(messageData);

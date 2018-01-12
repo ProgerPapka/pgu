@@ -15,10 +15,14 @@ public class SubscriberServiceImpl implements SubscriberService {
 
     @Autowired
     private ElkSubscribeService service;
+    @Autowired
+    private ObjectFactory objectFactorySmev;
+    @Autowired
+    private wsdl.gosuslugi.epgu.lk.subscribe.types.elksubscribeservicetypes.ObjectFactory objectFactoryElk;
 
     @Override
     public boolean subscribeToGetData(String token, LocalDateTime timestamp) {
-        HeaderType header = new HeaderType(); //никакой информации об этом объекте нет
+        HeaderType header = objectFactorySmev.createHeaderType(); //никакой информации об этом объекте нет
         BaseMessageType baseMessage = initBaseMessageTypeToSubscrb(token, timestamp);
         BaseMessageType response = service.process(header, baseMessage);
         AppDataType dataResponse = response.getMessageData().getAppData();
@@ -28,7 +32,7 @@ public class SubscriberServiceImpl implements SubscriberService {
 
     @Override
     public boolean unsubscribeToGetData(String token) {
-        HeaderType header = new HeaderType();
+        HeaderType header = objectFactorySmev.createHeaderType();
         BaseMessageType baseMessage = initBaseMessageTypeToUnsubcrb(token);
         BaseMessageType response = service.process(header, baseMessage);
         Error error = (Error) response.getMessageData().getAppData().getAny().get(0);
@@ -38,11 +42,11 @@ public class SubscriberServiceImpl implements SubscriberService {
     private BaseMessageType initBaseMessageTypeToUnsubcrb(String token) {
         BaseMessageType baseMessage = initBaseMessage();
         //message data
-        AppDataType dataType = new AppDataType();
-        UnsubscribeRequest unsubscribeRequest = new UnsubscribeRequest();
+        AppDataType dataType = objectFactorySmev.createAppDataType();
+        UnsubscribeRequest unsubscribeRequest = objectFactoryElk.createUnsubscribeRequest();
         unsubscribeRequest.setToken(token);
         dataType.getAny().add(unsubscribeRequest);
-        MessageDataType messageDataType = new MessageDataType();
+        MessageDataType messageDataType = objectFactorySmev.createMessageDataType();
         messageDataType.setAppData(dataType);
         baseMessage.setMessageData(messageDataType);
         return baseMessage;
@@ -51,8 +55,8 @@ public class SubscriberServiceImpl implements SubscriberService {
     private BaseMessageType initBaseMessageTypeToSubscrb(String token, LocalDateTime timestamp) {
         BaseMessageType baseMessage = initBaseMessage();
         //message data
-        AppDataType dataType = new AppDataType();
-        SubscribeRequest subscribeRequest = new SubscribeRequest();
+        AppDataType dataType = objectFactorySmev.createAppDataType();
+        SubscribeRequest subscribeRequest = objectFactoryElk.createSubscribeRequest();
         subscribeRequest.setToken(token);
         subscribeRequest.setSinceTime(
                 XMLGregorianCalendarImpl.createDateTime(
@@ -64,14 +68,14 @@ public class SubscriberServiceImpl implements SubscriberService {
                         timestamp.getSecond()
                 ));
         dataType.getAny().add(subscribeRequest);
-        MessageDataType messageDataType = new MessageDataType();
+        MessageDataType messageDataType = objectFactorySmev.createMessageDataType();
         messageDataType.setAppData(dataType);
         baseMessage.setMessageData(messageDataType);
         return baseMessage;
     }
 
     private BaseMessageType initBaseMessage() {
-        BaseMessageType baseMessage = new BaseMessageType();
+        BaseMessageType baseMessage = objectFactorySmev.createBaseMessageType();
         //message type
         String senderCode = "IPGU01001"; //эти данные взяты с примера запроса
         String senderName = "ЕПГУ";
@@ -80,9 +84,9 @@ public class SubscriberServiceImpl implements SubscriberService {
         String originatorCode = "IPGU01001";
         String originatorName = "ЕПГУ";
         String serviceName = "ElkSubscribeServiceV25";
-        OrgExternalType sender = new OrgExternalType();
-        OrgExternalType recipient = new OrgExternalType();
-        OrgExternalType originator = new OrgExternalType();
+        OrgExternalType sender =objectFactorySmev.createOrgExternalType();
+        OrgExternalType recipient = objectFactorySmev.createOrgExternalType();
+        OrgExternalType originator = objectFactorySmev.createOrgExternalType();
         LocalDateTime dateTime = LocalDateTime.now();
         XMLGregorianCalendar calendar = XMLGregorianCalendarImpl.createDateTime(
                 dateTime.getYear(),
@@ -92,7 +96,7 @@ public class SubscriberServiceImpl implements SubscriberService {
                 dateTime.getMinute(),
                 dateTime.getSecond()
         );
-        MessageType messageType = new MessageType();
+        MessageType messageType = objectFactorySmev.createMessageType();
         sender.setCode(senderCode);
         sender.setName(senderName);
         messageType.setSender(sender);

@@ -252,4 +252,8 @@ public class ObjectFactory {
         return new Orders();
     }
 
+    public UploadFiles createUploadFiles(){
+        return new UploadFiles();
+    }
+
 }
