@@ -5,10 +5,10 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import webservice.objects.elk.*;
 import webservice.objects.elk.Error;
-import webservice.objects.generated.FileDescription;
-import webservice.objects.generated.FileDescriptions;
+import webservice.objects.archive.FileDescription;
+import webservice.objects.archive.FileDescriptions;
 import webservice.objects.smev.*;
-import webservice.objects.generated.ArchiveDescription;
+import webservice.objects.archive.ArchiveDescription;
 import webservice.objects.smev.ObjectFactory;
 
 
@@ -33,7 +33,7 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
     private ObjectFactory objectFactorySmev;
     @Autowired
     private webservice.objects.elk.ObjectFactory objectFactoryElk;
-    private webservice.objects.generated.ObjectFactory objectFactoryArchive;
+    private webservice.objects.archive.ObjectFactory objectFactoryArchive;
 
     @Override
     public void sendOrders(List<Order> orders) {

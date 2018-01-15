@@ -2,11 +2,11 @@
 // This file was archive by the JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.8-b130911.1802
 // See <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Any modifications to this file will be lost upon recompilation of the source schema. 
-// Generated on: 2018.01.10 at 12:30:56 PM SAMT 
+// Generated on: 2018.01.11 at 10:23:27 AM SAMT 
 //
 
 
-package webservice.objects.elk.elksubscribetype;
+package webservice.objects.archive;
 
 import javax.xml.bind.annotation.XmlRegistry;
 
@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlRegistry;
 /**
  * This object contains factory methods for each 
  * Java content interface and Java element interface 
- * archive in the ru.gosuslugi.epgu.lk.subscribe.types.elksubscribeservicetypes package.
+ * archive in the archive package.
  * <p>An ObjectFactory allows you to programatically 
  * construct new instances of the Java representation 
  * for XML content. The Java representation of XML 
@@ -30,26 +30,34 @@ public class ObjectFactory {
 
 
     /**
-     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: ru.gosuslugi.epgu.lk.subscribe.types.elksubscribeservicetypes
+     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: archive
      * 
      */
     public ObjectFactory() {
     }
 
     /**
-     * Create an instance of {@link SubscribeRequest }
+     * Create an instance of {@link ArchiveDescription }
      * 
      */
-    public SubscribeRequest createSubscribeRequest() {
-        return new SubscribeRequest();
+    public ArchiveDescription createArchiveDescription() {
+        return new ArchiveDescription();
     }
 
     /**
-     * Create an instance of {@link UnsubscribeRequest }
+     * Create an instance of {@link FileDescriptions }
      * 
      */
-    public UnsubscribeRequest createUnsubscribeRequest() {
-        return new UnsubscribeRequest();
+    public FileDescriptions createFileDescriptions() {
+        return new FileDescriptions();
+    }
+
+    /**
+     * Create an instance of {@link FileDescription }
+     * 
+     */
+    public FileDescription createFileDescription() {
+        return new FileDescription();
     }
 
 }

@@ -6,14 +6,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import service.ServiceSendingDataToELK;
-import service.ServiceSendingDataToELKImpl;
-import service.SubscriberService;
-import service.SubscriberServiceImpl;
 import webservice.client.IPGU02.ArchiveUtil;
+import webservice.client.IPGU02.ServiceSendingDataToELK;
+import webservice.client.IPGU02.ServiceSendingDataToELKImpl;
+import webservice.client.IPGUElkSubscribeService.SubscriberService;
+import webservice.client.IPGUElkSubscribeService.SubscriberServiceImpl;
+import webservice.objects.elk.CreateOrderService;
+import webservice.objects.elk.CreateOrderService_Service;
 import webservice.objects.smev.ObjectFactory;
-import wsdl.CreateOrderService;
-import wsdl.CreateOrderService_Service;
+
 
 @Configuration
 public class Config {
@@ -61,8 +62,8 @@ public class Config {
     }
 
     @Bean
-    webservice.objects.generated.ObjectFactory initObjectFactoryArchive(){
-        return new webservice.objects.generated.ObjectFactory();
+    webservice.objects.archive.ObjectFactory initObjectFactoryArchive(){
+        return new webservice.objects.archive.ObjectFactory();
     }
 
 }
