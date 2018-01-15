@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
 @WebServiceClient(
         name = "ElkSubscribeService",
         targetNamespace = "http://epgu.gosuslugi.ru/lk/subscribe/",
-        wsdlLocation = "file:/C:/Users/ziatdinov.e/Documents/IntelliJProjects/rpgu/elk/webservIPGUElkSubscribeService/src/main/resources/wsdl/ws2.wsdl"
+        wsdlLocation = "file:/C:/Users/ziatdinov.e/Documents/IntelliJProjects/rpgu/obtaining/webservIPGUElkSubscribeService/src/main/resources/wsdl/ws2.wsdl"
 )
 public class ElkSubscribeService_Service extends Service {
     private static final URL ELKSUBSCRIBESERVICE_WSDL_LOCATION;
@@ -75,7 +75,7 @@ public class ElkSubscribeService_Service extends Service {
         WebServiceException var1 = null;
 
         try {
-            var0 = new URL("file:/C:/Users/ziatdinov.e/Documents/IntelliJProjects/rpgu/elk/webservIPGUElkSubscribeService/src/main/resources/wsdl/ws2.wsdl");
+            var0 = new URL("file:/C:/Users/ziatdinov.e/Documents/IntelliJProjects/rpgu/obtaining/webservIPGUElkSubscribeService/src/main/resources/wsdl/ws2.wsdl");
         } catch (MalformedURLException var3) {
             var1 = new WebServiceException(var3);
         }

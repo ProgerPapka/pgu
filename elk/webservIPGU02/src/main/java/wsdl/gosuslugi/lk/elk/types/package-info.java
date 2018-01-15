@@ -5,5 +5,5 @@
 // Generated on: 2018.01.10 at 04:42:14 PM SAMT 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://gosuslugi.ru/lk/elk/types/")
+@javax.xml.bind.annotation.XmlSchema(namespace = "http://gosuslugi.ru/lk/obtaining/types/")
 package wsdl.gosuslugi.lk.elk.types;

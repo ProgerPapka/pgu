@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlMixed;
 import javax.xml.bind.annotation.XmlType;
-import org.w3._2004._08.xop.include.Include;
+import wsdl.include.Include;
 
 
 /**

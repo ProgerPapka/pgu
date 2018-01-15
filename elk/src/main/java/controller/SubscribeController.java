@@ -11,21 +11,22 @@ import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import service.SubscriberService;
+import webservice.client.IPGUElkSubscribeService.SubscriberService;
+
 
 import java.time.LocalDateTime;
 
 @Service
 public class SubscribeController {
 
-    private Logger logger = Logger.getLogger(SubscriberService.class);
+    private Logger logger = Logger.getLogger(SubscribeController.class);
 
     @Autowired
     private SubscriberService subscriberService;
     @Autowired
     private TokenController tokenController;
     @Autowired
-    @Qualifier("elk")
+    @Qualifier("obtaining")
     private Token token;
     @Autowired
     private AuthToken authToken;

@@ -12,9 +12,9 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.ParameterStyle;
 import javax.xml.bind.annotation.XmlSeeAlso;
-import org.w3._2004._08.xop.include.ObjectFactory;
 import wsdl.gosuslugi.smev.rev120315.BaseMessageType;
 import wsdl.gosuslugi.smev.rev120315.HeaderType;
+import wsdl.include.ObjectFactory;
 
 @WebService(
         name = "ElkSubscribeService",
@@ -23,7 +23,7 @@ import wsdl.gosuslugi.smev.rev120315.HeaderType;
 @SOAPBinding(
         parameterStyle = ParameterStyle.BARE
 )
-@XmlSeeAlso({ObjectFactory.class, ru.gosuslugi.epgu.lk.common.types.ObjectFactory.class, ru.gosuslugi.epgu.lk.subscribe.types.elksubscribeservicetypes.ObjectFactory.class, ru.gosuslugi.smev.rev120315.ObjectFactory.class})
+@XmlSeeAlso({ObjectFactory.class, wsdl.gosuslugi.epgu.lk.common.types.ObjectFactory.class, wsdl.gosuslugi.epgu.lk.subscribe.types.elksubscribeservicetypes.ObjectFactory.class, wsdl.gosuslugi.smev.rev120315.ObjectFactory.class})
 public interface ElkSubscribeService {
     @WebMethod(
             action = "http://epgu.gosuslugi.ru/lk/ElkSubscribeService/process"

@@ -7,15 +7,8 @@
         <groupId>rpgu</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
+    <modelVersion>4.0.0</modelVersion>
     <artifactId>webserv-IPGU02</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>rpgu</groupId>
-            <artifactId>elk</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
 </project>

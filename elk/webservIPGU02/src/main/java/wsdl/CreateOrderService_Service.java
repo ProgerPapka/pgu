@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
 @WebServiceClient(
         name = "CreateOrderService",
         targetNamespace = "http://gosuslugi.ru/epguapi/ws/v25/",
-        wsdlLocation = "file:/C:/Users/ziatdinov.e/Documents/IntelliJProjects/rpgu/elk/webservIPGU02/src/main/resources/wsdl/ws1.wsdl"
+        wsdlLocation = "file:/C:/Users/ziatdinov.e/Documents/IntelliJProjects/rpgu/obtaining/webservIPGU02/src/main/resources/wsdl/ws1.wsdl"
 )
 public class CreateOrderService_Service extends Service {
     private static final URL CREATEORDERSERVICE_WSDL_LOCATION;
@@ -75,7 +75,7 @@ public class CreateOrderService_Service extends Service {
         WebServiceException var1 = null;
 
         try {
-            var0 = new URL("file:/C:/Users/ziatdinov.e/Documents/IntelliJProjects/rpgu/elk/webservIPGU02/src/main/resources/wsdl/ws1.wsdl");
+            var0 = new URL("file:/C:/Users/ziatdinov.e/Documents/IntelliJProjects/rpgu/obtaining/webservIPGU02/src/main/resources/wsdl/ws1.wsdl");
         } catch (MalformedURLException var3) {
             var1 = new WebServiceException(var3);
         }

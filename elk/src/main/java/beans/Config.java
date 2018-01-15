@@ -10,6 +10,8 @@ import service.ServiceSendingDataToELK;
 import service.ServiceSendingDataToELKImpl;
 import service.SubscriberService;
 import service.SubscriberServiceImpl;
+import webservice.client.IPGU02.ArchiveUtil;
+import webservice.objects.smev.ObjectFactory;
 import wsdl.CreateOrderService;
 import wsdl.CreateOrderService_Service;
 
@@ -41,6 +43,26 @@ public class Config {
     CreateOrderService initConnectToService(){
         CreateOrderService_Service createOrderService_service = new CreateOrderService_Service();
         return createOrderService_service.getCreateOrderService();
+    }
+
+    @Bean
+    ArchiveUtil initArchiveUtil(){
+        return new ArchiveUtil();
+    }
+
+    @Bean
+    ObjectFactory initObjectFactorySmev(){
+        return new ObjectFactory();
+    }
+
+    @Bean
+    webservice.objects.elk.ObjectFactory initObjectFactoryElk(){
+        return new webservice.objects.elk.ObjectFactory();
+    }
+
+    @Bean
+    webservice.objects.generated.ObjectFactory initObjectFactoryArchive(){
+        return new webservice.objects.generated.ObjectFactory();
     }
 
 }

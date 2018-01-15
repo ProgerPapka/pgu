@@ -49,7 +49,7 @@ public class Scope {
      */
     public static final String CTTS = "/ctts";
 
-    public static final String ELK = "http://lk.gosuslugi.ru/elk?oid=";
+    public static final String ELK = "http://lk.gosuslugi.ru/obtaining?oid=";
 
     public static String getUserData() {
         return OPENID;

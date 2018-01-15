@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 @SOAPBinding(
         parameterStyle = SOAPBinding.ParameterStyle.BARE
 )
-@XmlSeeAlso({ObjectFactory.class})
+@XmlSeeAlso({ObjectFactory.class, wsdl.include.ObjectFactory.class, wsdl.lk.elk.types.ObjectFactory.class})
 public interface ElkSyncService {
 
     @WebMethod(
