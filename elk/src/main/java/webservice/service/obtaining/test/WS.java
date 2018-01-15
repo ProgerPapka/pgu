@@ -1,6 +1,7 @@
 package webservice.service.obtaining.test;
 
-import service.ElkSyncServiceImpl;
+
+import webservice.service.obtaining.service.ElkSyncServiceImpl;
 
 import javax.xml.ws.Endpoint;
 

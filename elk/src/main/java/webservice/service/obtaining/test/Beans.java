@@ -2,7 +2,8 @@ package webservice.service.obtaining.test;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import wsdl.include.ObjectFactory;
+import webservice.objects.include.ObjectFactory;
+
 
 @Configuration
 public class Beans {
@@ -13,13 +14,13 @@ public class Beans {
     }
 
     @Bean(name = "elk")
-    public wsdl.lk.elk.types.ObjectFactory initObjFactElk(){
-        return new wsdl.lk.elk.types.ObjectFactory();
+    public webservice.objects.elk.ObjectFactory initObjFactElk(){
+        return new webservice.objects.elk.ObjectFactory();
     }
 
     @Bean(name = "smev")
-    public wsdl.smev.ObjectFactory initObjFactSmev(){
-        return new wsdl.smev.ObjectFactory();
+    public webservice.objects.smev.ObjectFactory initObjFactSmev(){
+        return new webservice.objects.smev.ObjectFactory();
     }
 
     @Bean(name = "ws")

@@ -8,7 +8,7 @@
 
 package webservice.objects.smev;
 
-import wsdl.include.Include;
+import webservice.objects.include.Include;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.*;
