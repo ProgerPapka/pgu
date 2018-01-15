@@ -1,5 +1,6 @@
 package webservice.service.obtaining.test;
 
+import beans.Config;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Test {

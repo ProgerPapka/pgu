@@ -1,12 +1,15 @@
 package webservice.service.obtaining.service;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import webservice.objects.elk.*;
 import webservice.objects.smev.*;
 import webservice.objects.smev.ObjectFactory;
 
 import javax.jws.WebService;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,20 +18,25 @@ import java.util.List;
 )
 public class ElkSyncServiceImpl implements ElkSyncService {
 
+    private static Logger logger = Logger.getLogger(ElkSyncServiceImpl.class);
+
     @Autowired
-    private webservice.objects.elk.ObjectFactory objectFactoryElk;
+    @Qualifier("elk")
+    private webservice.objects.elk.ObjectFactory objectFactoryElk = new webservice.objects.elk.ObjectFactory();
     @Autowired
-    private ObjectFactory objectFactorySmev;
+    @Qualifier("smev")
+    private ObjectFactory objectFactorySmev = new ObjectFactory();
 
     @Override
     public BaseMessageType createOrders(HeaderType var1, BaseMessageType var2) {
+        logger.info("Запрос на запись заявления пришел!!!");
         getMessage(var2.getMessage());
         //messageData
         CreateOrdersRequest createOrdersRequest = (CreateOrdersRequest)
                 var2.getMessageData().getAppData().getAny().get(0);
         Orders orders = createOrdersRequest.getOrders();
         OrderResponse orderResponse = objectFactoryElk.createOrderResponse();
-        List<String> elkNumbers = Collections.emptyList();
+        List<String> elkNumbers = new ArrayList<>();
         for (Order order : orders.getOrder()) {
             String userId = order.getUserId();
             String eServiceCode = order.getEServiceCode();
@@ -228,6 +236,7 @@ public class ElkSyncServiceImpl implements ElkSyncService {
 
     private void getMessage(MessageType messageType) {
         //message
+        logger.info("Получаем мета данные о сообщении");
         String senderCode = messageType.getSender().getCode();
         String senderName = messageType.getSender().getName();
         String recipientCode = messageType.getRecipient().getCode();
@@ -239,6 +248,7 @@ public class ElkSyncServiceImpl implements ElkSyncService {
         StatusType statusType = messageType.getStatus();
         XMLGregorianCalendar calendar = messageType.getDate();
         String exchangeType = messageType.getExchangeType();
+        logger.info("Получили мета данные о сообщении!");
     }
 
     private BaseMessageType createResponse(MessageType messageType, AppDataType appDataType) {
