@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class ControllerSendingOrders {
+public class SendingOrdersController {
 
     @Autowired
     private ServiceSendingDataToELK serviceSendingDataToELK;
