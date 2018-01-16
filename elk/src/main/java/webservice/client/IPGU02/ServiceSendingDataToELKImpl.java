@@ -103,6 +103,26 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
         }
     }
 
+    public void setService(CreateOrderService service) {
+        this.service = service;
+    }
+
+    public void setArchiveUtil(ArchiveUtil archiveUtil) {
+        this.archiveUtil = archiveUtil;
+    }
+
+    public void setObjectFactorySmev(ObjectFactory objectFactorySmev) {
+        this.objectFactorySmev = objectFactorySmev;
+    }
+
+    public void setObjectFactoryElk(webservice.objects.elk.ObjectFactory objectFactoryElk) {
+        this.objectFactoryElk = objectFactoryElk;
+    }
+
+    public void setObjectFactoryArchive(webservice.objects.archive.ObjectFactory objectFactoryArchive) {
+        this.objectFactoryArchive = objectFactoryArchive;
+    }
+
     private BaseMessageType initBaseMessageToUploadFiles(List<String> nameFiles,
                                                          String elkNumber, String statusExtId) {
         UploadFiles uploadFiles = objectFactoryElk.createUploadFiles();

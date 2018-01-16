@@ -41,6 +41,18 @@ public class SubscriberServiceImpl implements SubscriberService {
         return error.getCode() == 0;
     }
 
+    public void setService(ElkSubscribeService service) {
+        this.service = service;
+    }
+
+    public void setObjectFactorySmev(ObjectFactory objectFactorySmev) {
+        this.objectFactorySmev = objectFactorySmev;
+    }
+
+    public void setObjectFactoryElk(webservice.objects.elk.elksubscribetype.ObjectFactory objectFactoryElk) {
+        this.objectFactoryElk = objectFactoryElk;
+    }
+
     private BaseMessageType initBaseMessageTypeToUnsubcrb(String token) {
         BaseMessageType baseMessage = initBaseMessage();
         //message data
