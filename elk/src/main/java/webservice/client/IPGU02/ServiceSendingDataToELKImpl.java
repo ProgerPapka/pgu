@@ -204,6 +204,7 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
         AppDataType appDataType = objectFactorySmev.createAppDataType();
         appDataType.getAny().add(uploadFiles);
         AppDocumentType documentType = objectFactorySmev.createAppDocumentType();
+        documentType.setRequestCode("1");
         documentType.setBinaryData(
                 archiveUtil.generateArchive(
                         nameFiles,
