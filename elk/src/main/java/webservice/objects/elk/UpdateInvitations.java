@@ -8,10 +8,7 @@
 
 package webservice.objects.elk;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 
 
 /**
@@ -37,6 +34,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "UpdateInvitations", propOrder = {
     "invitations"
 })
+@XmlRootElement
 public class UpdateInvitations {
 
     @XmlElement(required = true)

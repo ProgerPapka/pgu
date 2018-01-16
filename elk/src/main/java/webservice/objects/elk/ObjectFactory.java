@@ -64,8 +64,8 @@ public class ObjectFactory {
      * Create an instance of {@link CreateOrder }
      * 
      */
-    public CreateOrder createCreateOrder() {
-        return new CreateOrder();
+    public Order createCreateOrder() {
+        return new Order();
     }
 
     /**

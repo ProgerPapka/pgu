@@ -1,24 +1,41 @@
 package webservice.service.obtaining.service;
 
+import com.sun.org.apache.xml.internal.security.c14n.Canonicalizer;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.w3c.dom.Document;
 import webservice.objects.elk.*;
 import webservice.objects.smev.*;
 import webservice.objects.smev.ObjectFactory;
 
 import javax.jws.WebService;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.soap.MessageFactory;
+import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPMessage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @WebService(
         endpointInterface = "webservice.service.obtaining.service.ElkSyncService"
 )
-public class ElkSyncServiceImpl implements ElkSyncService {
+@XmlSeeAlso({ObjectFactory.class, webservice.objects.include.ObjectFactory.class, webservice.objects.elk.ObjectFactory.class})
+public class ElkSync implements ElkSyncService {
 
-    private static Logger logger = Logger.getLogger(ElkSyncServiceImpl.class);
+    private static Logger logger = Logger.getLogger(ElkSync.class);
 
     @Autowired
     @Qualifier("elk")
@@ -64,7 +81,7 @@ public class ElkSyncServiceImpl implements ElkSyncService {
                 var2.getMessageData().getAppData().getAny().get(0);
         UpdateOrders updateOrders = updateOrdersRequest.getOrders();
         OrderResponse orderResponse = objectFactoryElk.createOrderResponse();
-        List<String> elkNumbers = Collections.emptyList();
+        List<String> elkNumbers = new ArrayList<>();
         //get data
         for (UpdateOrder order : updateOrders.getOrder()) {
             String elkNumber = order.getElkOrderNumber();
@@ -84,7 +101,7 @@ public class ElkSyncServiceImpl implements ElkSyncService {
         getMessage(var2.getMessage());
         DeleteOrdersRequest deleteOrdersRequest = (DeleteOrdersRequest)
                 var2.getMessageData().getAppData().getAny().get(0);
-        List<String> elkNumbers = Collections.emptyList();
+        List<String> elkNumbers = new ArrayList<>();
         for (String elkNumber : deleteOrdersRequest.getElkOrderNumber()) {
             deleteOrder(elkNumber);
         }
@@ -99,7 +116,7 @@ public class ElkSyncServiceImpl implements ElkSyncService {
         getMessage(var2.getMessage());
         CreateInvitations invitations = (CreateInvitations)
                 var2.getMessageData().getAppData().getAny().get(0);
-        List<String> elkInvitationNumbers = Collections.emptyList();
+        List<String> elkInvitationNumbers = new ArrayList<>();
         getInvitations(invitations.getInvitations(), elkInvitationNumbers);
         InvitationResponse invitationResponse = createOkInvitationResponse(elkInvitationNumbers);
         AppDataType appDataType = objectFactorySmev.createAppDataType();
@@ -112,7 +129,7 @@ public class ElkSyncServiceImpl implements ElkSyncService {
         getMessage(var2.getMessage());
         UpdateInvitations invitations = (UpdateInvitations)
                 var2.getMessageData().getAppData().getAny().get(0);
-        List<String> elkInvitationNumbers = Collections.emptyList();
+        List<String> elkInvitationNumbers = new ArrayList<>();
         getInvitations(invitations.getInvitations(), elkInvitationNumbers);
         InvitationResponse invitationResponse = createOkInvitationResponse(elkInvitationNumbers);
         AppDataType appDataType = objectFactorySmev.createAppDataType();
@@ -125,7 +142,7 @@ public class ElkSyncServiceImpl implements ElkSyncService {
         getMessage(var2.getMessage());
         CreatePayments createPayments = (CreatePayments)
                 var2.getMessageData().getAppData().getAny().get(0);
-        List<String> elkPaymentNumbers = Collections.emptyList();
+        List<String> elkPaymentNumbers = new ArrayList<>();
         for (Payment payment : createPayments.getPayments().getPayment()) {
             String userId = payment.getUserId();
             String elkPaymentNumber = payment.getElkPaymentNumber();
@@ -136,7 +153,7 @@ public class ElkSyncServiceImpl implements ElkSyncService {
             String paymentUrl = payment.getPaymentUrl();
         }
         PaymentResponse paymentResponse = createOkPaymentResponse(elkPaymentNumbers);
-        AppDataType appDataType =objectFactorySmev.createAppDataType();
+        AppDataType appDataType = objectFactorySmev.createAppDataType();
         appDataType.getAny().add(paymentResponse);
         return createResponse(var2.getMessage(), appDataType);
     }
@@ -257,6 +274,73 @@ public class ElkSyncServiceImpl implements ElkSyncService {
         MessageDataType messageDataType = objectFactorySmev.createMessageDataType();
         messageDataType.setAppData(appDataType);
         var3.setMessageData(messageDataType);
+        String cur;
+        try {
+            cur = this.marshall(var3, BaseMessageType.class, "http://smev.gosuslugi.ru/rev120315", "BaseMessage");
+        } catch (SOAPException e) {
+            e.printStackTrace();
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return var3;
     }
+
+    private SOAPMessage toSOAPMessage(Document doc) throws Exception {
+        Canonicalizer c14n =
+                Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_WITH_COMMENTS);
+        byte[] canonicalMessage = c14n.canonicalizeSubtree(doc);
+        ByteArrayInputStream in = new ByteArrayInputStream(canonicalMessage);
+        MessageFactory factory = MessageFactory.newInstance();
+        return factory.createMessage(null, in);
+    }
+
+    public SOAPMessage marshallToSoap(Document document) throws SOAPException {
+        SOAPMessage soapMessage;
+
+        if (document.getElementsByTagNameNS("http://schemas.xmlsoap.org/soap/envelope/", "Envelope").getLength() != 0) {
+            try {
+                soapMessage = toSOAPMessage(document);
+            } catch (Exception e) {
+                return null;
+            }
+        } else {
+            soapMessage = MessageFactory.newInstance().createMessage();
+            soapMessage.getSOAPBody().addDocument(document);
+        }
+        return soapMessage;
+    }
+
+    private JAXBElement getJaxbElement(Class<?> clazz, String namespace, String mainTag, Object object) {
+        return new JAXBElement(new QName(namespace, mainTag), clazz, null, object);
+    }
+
+    public Document getXMLDocument(Object objectMessage, Class<?> clazz, String namespace, String mainTag) throws JAXBException, ParserConfigurationException {
+        DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        Document document = builder.newDocument();
+
+        Marshaller marshaller = JAXBContext.newInstance(ObjectFactory.class, webservice.objects.include.ObjectFactory.class, webservice.objects.elk.ObjectFactory.class)
+                .createMarshaller();
+
+        marshaller.marshal(getJaxbElement(clazz, namespace, mainTag, objectMessage), document);
+
+        return document;
+    }
+
+    public String marshall(Document document) throws SOAPException, IOException {
+        SOAPMessage soapMessage = marshallToSoap(document);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        soapMessage.writeTo(outputStream);
+
+        return outputStream.toString("UTF-8");
+    }
+
+    public String marshall(Object objectMessage, Class<?> clazz, String namespace, String mainTag) throws SOAPException, JAXBException, ParserConfigurationException, IOException {
+        return marshall(getXMLDocument(objectMessage, clazz, namespace, mainTag));
+    }
+
 }
