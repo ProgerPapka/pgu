@@ -26,7 +26,7 @@ public class SubscribeController {
     @Autowired
     private TokenController tokenController;
     @Autowired
-    @Qualifier("obtaining")
+    @Qualifier("elk")
     private Token token;
     @Autowired
     private AuthToken authToken;

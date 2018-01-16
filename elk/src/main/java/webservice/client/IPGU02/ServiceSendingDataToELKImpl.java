@@ -3,6 +3,7 @@ package webservice.client.IPGU02;
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import webservice.objects.elk.*;
 import webservice.objects.elk.Error;
 import webservice.objects.archive.FileDescription;
@@ -30,9 +31,12 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
     @Autowired
     private ArchiveUtil archiveUtil;
     @Autowired
+    @Qualifier("objFactSmev")
     private ObjectFactory objectFactorySmev;
     @Autowired
+    @Qualifier("objFactElk")
     private webservice.objects.elk.ObjectFactory objectFactoryElk;
+    @Qualifier("objFactArch")
     private webservice.objects.archive.ObjectFactory objectFactoryArchive;
 
     @Override

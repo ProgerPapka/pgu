@@ -38,10 +38,10 @@ public class ElkSync implements ElkSyncService {
     private static Logger logger = Logger.getLogger(ElkSync.class);
 
     @Autowired
-    @Qualifier("elk")
+    @Qualifier("objFactElk")
     private webservice.objects.elk.ObjectFactory objectFactoryElk = new webservice.objects.elk.ObjectFactory();
     @Autowired
-    @Qualifier("smev")
+    @Qualifier("objFactSmev")
     private ObjectFactory objectFactorySmev = new ObjectFactory();
 
     @Override
@@ -277,14 +277,10 @@ public class ElkSync implements ElkSyncService {
         String cur;
         try {
             cur = this.marshall(var3, BaseMessageType.class, "http://smev.gosuslugi.ru/rev120315", "BaseMessage");
-        } catch (SOAPException e) {
-            e.printStackTrace();
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+        } catch (SOAPException | JAXBException | ParserConfigurationException e) {
+            logger.error(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("IOException", e);
         }
         return var3;
     }
