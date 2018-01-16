@@ -11,6 +11,7 @@ import webservice.objects.archive.FileDescriptions;
 import webservice.objects.smev.*;
 import webservice.objects.archive.ArchiveDescription;
 import webservice.objects.smev.ObjectFactory;
+import webservice.objects.time.TimeStampUtil;
 
 
 import javax.xml.bind.JAXBContext;
@@ -42,7 +43,19 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
     @Override
     public void sendOrders(List<Order> orders) {
         BaseMessageType baseMessageType = initBaseMessageToSendOrders(orders);
-        BaseMessageType response = service.createOrders(objectFactorySmev.createHeaderType(), baseMessageType);
+        HeaderType headerType = objectFactorySmev.createHeaderType();
+        headerType.setActor("pgu");
+        headerType.setMessageClass(MessageClassType.REQUEST);
+        headerType.setMessageId("1");
+        headerType.setNodeId("12");
+        PacketIdsType packetIdsType = objectFactorySmev.createPacketIdsType();
+        PacketIdType packetIdType = objectFactorySmev.createPacketIdType();
+        packetIdType.setMessageId("1");
+        packetIdType.setSubRequestNumber("13");
+        packetIdsType.getId().add(packetIdType);
+        headerType.setPacketIds(packetIdsType);
+        headerType.setTimeStamp(TimeStampUtil.getXMLGregorianCalendar(LocalDateTime.now()));
+        BaseMessageType response = service.createOrders( headerType, baseMessageType);
         //TODO переписать правильно проверку ответа. xsd нет!
         Error error = (Error) response.getMessageData().getAppData().getAny().get(0);
         if (error.getCode() == 0) {
