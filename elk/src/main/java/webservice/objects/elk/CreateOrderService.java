@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 @SOAPBinding(
         parameterStyle = ParameterStyle.BARE
 )
-@XmlSeeAlso({ObjectFactory.class})
+@XmlSeeAlso({ObjectFactory.class, webservice.objects.smev.ObjectFactory.class, webservice.objects.include.ObjectFactory.class})
 public interface CreateOrderService {
     @WebMethod(
             action = "createOrder"

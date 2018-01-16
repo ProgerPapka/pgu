@@ -27,7 +27,7 @@ public class SubscriberServiceTest {
         try {
             //тестовая среда
             URL url = new URL("http://smev-mvf.test.gosuslugi.ru:7777/gateway/services/SID0004155?wsdl");
-            QName qname = new QName("http://epgu.gosuslugi.ru/lk/subscribe/", "QueryOrderService");
+            QName qname = new QName("http://epgu.gosuslugi.ru/lk/subscribe/", "ElkSubscribeService");
             Service service = Service.create(url, qname);
             ElkSubscribeService syncService = service.getPort(ElkSubscribeService.class);
             SubscriberServiceImpl subscriberServ = new SubscriberServiceImpl();
