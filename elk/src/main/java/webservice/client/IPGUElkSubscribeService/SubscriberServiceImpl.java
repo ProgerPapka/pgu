@@ -25,6 +25,17 @@ public class SubscriberServiceImpl implements SubscriberService {
     @Override
     public boolean subscribeToGetData(String token, LocalDateTime timestamp) {
         HeaderType header = objectFactorySmev.createHeaderType(); //никакой информации об этом объекте нет
+        header.setActor("pgu");
+        header.setMessageClass(MessageClassType.REQUEST);
+        header.setMessageId("1");
+        header.setNodeId("12");
+        PacketIdsType packetIdsType = objectFactorySmev.createPacketIdsType();
+        PacketIdType packetIdType = objectFactorySmev.createPacketIdType();
+        packetIdType.setMessageId("1");
+        packetIdType.setSubRequestNumber("13");
+        packetIdsType.getId().add(packetIdType);
+        header.setPacketIds(packetIdsType);
+        header.setTimeStamp(new XMLGregorianCalendarImpl());
         BaseMessageType baseMessage = initBaseMessageTypeToSubscrb(token, timestamp);
         BaseMessageType response = service.process(header, baseMessage);
         AppDataType dataResponse = response.getMessageData().getAppData();
@@ -35,6 +46,17 @@ public class SubscriberServiceImpl implements SubscriberService {
     @Override
     public boolean unsubscribeToGetData(String token) {
         HeaderType header = objectFactorySmev.createHeaderType();
+        header.setActor("pgu");
+        header.setMessageClass(MessageClassType.REQUEST);
+        header.setMessageId("1");
+        header.setNodeId("12");
+        PacketIdsType packetIdsType = objectFactorySmev.createPacketIdsType();
+        PacketIdType packetIdType = objectFactorySmev.createPacketIdType();
+        packetIdType.setMessageId("1");
+        packetIdType.setSubRequestNumber("13");
+        packetIdsType.getId().add(packetIdType);
+        header.setPacketIds(packetIdsType);
+        header.setTimeStamp(new XMLGregorianCalendarImpl());
         BaseMessageType baseMessage = initBaseMessageTypeToUnsubcrb(token);
         BaseMessageType response = service.process(header, baseMessage);
         Error error = (Error) response.getMessageData().getAppData().getAny().get(0);
