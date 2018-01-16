@@ -5,11 +5,14 @@ import exception.ElkServiceException;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import webservice.MyServiceLogHandler;
 import webservice.client.IPGUElkSubscribeService.SubscriberServiceTest;
 import webservice.objects.elk.*;
 
 import javax.xml.namespace.QName;
+import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Service;
+import javax.xml.ws.handler.Handler;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,6 +35,12 @@ public class ServiceSendingDataToELKTest {
             QName qname = new QName("http://gosuslugi.ru/epguapi/ws/v25/", "CreateOrderService");
             Service service = Service.create(url, qname);
             CreateOrderService createOrderService = service.getPort(CreateOrderService.class);
+
+            BindingProvider bindingProvider = (BindingProvider) createOrderService;
+            java.util.List<Handler> handlers = bindingProvider.getBinding().getHandlerChain();
+            handlers.add(new MyServiceLogHandler());
+            bindingProvider.getBinding().setHandlerChain(handlers);
+
             ServiceSendingDataToELKImpl serviceSendingDataToELK = new ServiceSendingDataToELKImpl();
             serviceSendingDataToELK.setService(createOrderService);
             serviceSendingDataToELK.setArchiveUtil(new ArchiveUtil());

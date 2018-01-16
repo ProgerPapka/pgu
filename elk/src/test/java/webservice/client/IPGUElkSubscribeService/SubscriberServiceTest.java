@@ -4,13 +4,16 @@ import exception.ElkServiceException;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import webservice.MyServiceLogHandler;
 import webservice.client.IPGU02.ServiceSendingDataToELK;
 import webservice.client.IPGU02.ServiceSendingDataToELKImpl;
 import webservice.objects.elk.ElkSubscribeService;
 import webservice.objects.elk.elksubscribetype.ObjectFactory;
 
 import javax.xml.namespace.QName;
+import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Service;
+import javax.xml.ws.handler.Handler;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -31,6 +34,12 @@ public class SubscriberServiceTest {
             QName qname = new QName("http://epgu.gosuslugi.ru/lk/subscribe/", "ElkSubscribeService");
             Service service = Service.create(url, qname);
             ElkSubscribeService syncService = service.getPort(ElkSubscribeService.class);
+
+            BindingProvider bindingProvider = (BindingProvider) syncService;
+            java.util.List<Handler> handlers = bindingProvider.getBinding().getHandlerChain();
+            handlers.add(new MyServiceLogHandler());
+            bindingProvider.getBinding().setHandlerChain(handlers);
+
             SubscriberServiceImpl subscriberServ = new SubscriberServiceImpl();
             subscriberServ.setService(syncService);
             subscriberServ.setObjectFactoryElk(new ObjectFactory());
