@@ -1,6 +1,7 @@
 package webservice.client.IPGU02;
 
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
+import exception.ElkServiceException;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -52,13 +53,21 @@ public class ServiceSendingDataToELKTest {
         order.setEServiceCode("1");
         order.setRequestDate(new XMLGregorianCalendarImpl());
         list.add(order);
-        sendingDataToELK.sendOrders(list);
+        try {
+            sendingDataToELK.sendOrders(list);
+        } catch (ElkServiceException e) {
+            logger.error(e);
+        }
     }
 
     @Test
     public void deleteOrders() {
-        List<String> list = Arrays.asList("12","2313","2131");
-        sendingDataToELK.deleteOrders(list);
+        List<String> list = Arrays.asList("12", "2313", "2131");
+        try {
+            sendingDataToELK.deleteOrders(list);
+        } catch (ElkServiceException e) {
+            logger.error(e);
+        }
     }
 
     @Test
@@ -75,12 +84,20 @@ public class ServiceSendingDataToELKTest {
         statusHistoryList.getStatusHistory().add(statusHistory);
         updateOrder.getStatusHistoryList().add(statusHistoryList);
         orders.add(updateOrder);
-        sendingDataToELK.updateOrders(orders);
+        try {
+            sendingDataToELK.updateOrders(orders);
+        } catch (ElkServiceException e) {
+            logger.error(e);
+        }
     }
 
     @Test
     public void sendFilesByOrders() {
         List<String> fileNames = new ArrayList<>();
-        sendingDataToELK.sendFilesByOrders(fileNames,"12","0");
+        try {
+            sendingDataToELK.sendFilesByOrders(fileNames, "12", "0");
+        } catch (ElkServiceException e) {
+            logger.error(e);
+        }
     }
 }

@@ -1,6 +1,9 @@
 package webservice.client.IPGUElkSubscribeService;
 
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
+import com.sun.xml.internal.ws.fault.ServerSOAPFaultException;
+import exception.ElkServiceException;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -16,6 +19,8 @@ import webservice.objects.time.TimeStampUtil;
 
 public class SubscriberServiceImpl implements SubscriberService {
 
+    private static Logger logger = Logger.getLogger(SubscriberServiceImpl.class);
+
     @Autowired
     private ElkSubscribeService service;
     @Autowired
@@ -24,44 +29,56 @@ public class SubscriberServiceImpl implements SubscriberService {
     private webservice.objects.elk.elksubscribetype.ObjectFactory objectFactoryElk;
 
     @Override
-    public boolean subscribeToGetData(String token, LocalDateTime timestamp) {
-        HeaderType header = objectFactorySmev.createHeaderType(); //никакой информации об этом объекте нет
-        header.setActor("pgu");
-        header.setMessageClass(MessageClassType.REQUEST);
-        header.setMessageId("1");
-        header.setNodeId("12");
-        PacketIdsType packetIdsType = objectFactorySmev.createPacketIdsType();
-        PacketIdType packetIdType = objectFactorySmev.createPacketIdType();
-        packetIdType.setMessageId("1");
-        packetIdType.setSubRequestNumber("13");
-        packetIdsType.getId().add(packetIdType);
-        header.setPacketIds(packetIdsType);
-        header.setTimeStamp(TimeStampUtil.getXMLGregorianCalendar(LocalDateTime.now()));
-        BaseMessageType baseMessage = initBaseMessageTypeToSubscrb(token, timestamp);
-        BaseMessageType response = service.process(header, baseMessage);
-        AppDataType dataResponse = response.getMessageData().getAppData();
-        Error error = (Error) dataResponse.getAny().get(0);
-        return error.getCode() == 0;
+    public boolean subscribeToGetData(String token, LocalDateTime timestamp) throws ElkServiceException {
+        try {
+            HeaderType header = objectFactorySmev.createHeaderType(); //никакой информации об этом объекте нет
+            header.setActor("pgu");
+            header.setMessageClass(MessageClassType.REQUEST);
+            header.setMessageId("1");
+            header.setNodeId("12");
+            PacketIdsType packetIdsType = objectFactorySmev.createPacketIdsType();
+            PacketIdType packetIdType = objectFactorySmev.createPacketIdType();
+            packetIdType.setMessageId("1");
+            packetIdType.setSubRequestNumber("13");
+            packetIdsType.getId().add(packetIdType);
+            header.setPacketIds(packetIdsType);
+            header.setTimeStamp(TimeStampUtil.getXMLGregorianCalendar(LocalDateTime.now()));
+            BaseMessageType baseMessage = initBaseMessageTypeToSubscrb(token, timestamp);
+            BaseMessageType response = service.process(header, baseMessage);
+            AppDataType dataResponse = response.getMessageData().getAppData();
+            Error error = (Error) dataResponse.getAny().get(0);
+            return error.getCode() == 0;
+        } catch (ServerSOAPFaultException e) {
+            logger.error("Ошибка на сервере!", e);
+            throw new ElkServiceException(e);
+        }
+
     }
 
     @Override
-    public boolean unsubscribeToGetData(String token) {
-        HeaderType header = objectFactorySmev.createHeaderType();
-        header.setActor("pgu");
-        header.setMessageClass(MessageClassType.REQUEST);
-        header.setMessageId("1");
-        header.setNodeId("12");
-        PacketIdsType packetIdsType = objectFactorySmev.createPacketIdsType();
-        PacketIdType packetIdType = objectFactorySmev.createPacketIdType();
-        packetIdType.setMessageId("1");
-        packetIdType.setSubRequestNumber("13");
-        packetIdsType.getId().add(packetIdType);
-        header.setPacketIds(packetIdsType);
-        header.setTimeStamp(new XMLGregorianCalendarImpl());
-        BaseMessageType baseMessage = initBaseMessageTypeToUnsubcrb(token);
-        BaseMessageType response = service.process(header, baseMessage);
-        Error error = (Error) response.getMessageData().getAppData().getAny().get(0);
-        return error.getCode() == 0;
+    public boolean unsubscribeToGetData(String token) throws ElkServiceException {
+        try {
+            HeaderType header = objectFactorySmev.createHeaderType();
+            header.setActor("pgu");
+            header.setMessageClass(MessageClassType.REQUEST);
+            header.setMessageId("1");
+            header.setNodeId("12");
+            PacketIdsType packetIdsType = objectFactorySmev.createPacketIdsType();
+            PacketIdType packetIdType = objectFactorySmev.createPacketIdType();
+            packetIdType.setMessageId("1");
+            packetIdType.setSubRequestNumber("13");
+            packetIdsType.getId().add(packetIdType);
+            header.setPacketIds(packetIdsType);
+            header.setTimeStamp(new XMLGregorianCalendarImpl());
+            BaseMessageType baseMessage = initBaseMessageTypeToUnsubcrb(token);
+            BaseMessageType response = service.process(header, baseMessage);
+            Error error = (Error) response.getMessageData().getAppData().getAny().get(0);
+            return error.getCode() == 0;
+        } catch (ServerSOAPFaultException e) {
+            logger.error("Ошибка на сервере!", e);
+            throw new ElkServiceException(e);
+        }
+
     }
 
     public void setService(ElkSubscribeService service) {
@@ -72,7 +89,8 @@ public class SubscriberServiceImpl implements SubscriberService {
         this.objectFactorySmev = objectFactorySmev;
     }
 
-    public void setObjectFactoryElk(webservice.objects.elk.elksubscribetype.ObjectFactory objectFactoryElk) {
+    public void setObjectFactoryElk(webservice.objects.elk.elksubscribetype.ObjectFactory
+                                            objectFactoryElk) {
         this.objectFactoryElk = objectFactoryElk;
     }
 
@@ -121,7 +139,7 @@ public class SubscriberServiceImpl implements SubscriberService {
         String originatorCode = "IPGU01001";
         String originatorName = "ЕПГУ";
         String serviceName = "ElkSubscribeServiceV25";
-        OrgExternalType sender =objectFactorySmev.createOrgExternalType();
+        OrgExternalType sender = objectFactorySmev.createOrgExternalType();
         OrgExternalType recipient = objectFactorySmev.createOrgExternalType();
         OrgExternalType originator = objectFactorySmev.createOrgExternalType();
         LocalDateTime dateTime = LocalDateTime.now();

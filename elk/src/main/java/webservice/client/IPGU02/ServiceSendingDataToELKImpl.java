@@ -1,6 +1,8 @@
 package webservice.client.IPGU02;
 
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
+import com.sun.xml.internal.ws.fault.ServerSOAPFaultException;
+import exception.ElkServiceException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -41,30 +43,36 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
     private webservice.objects.archive.ObjectFactory objectFactoryArchive;
 
     @Override
-    public void sendOrders(List<Order> orders) {
-        BaseMessageType baseMessageType = initBaseMessageToSendOrders(orders);
-        HeaderType headerType = objectFactorySmev.createHeaderType();
-        headerType.setActor("pgu");
-        headerType.setMessageClass(MessageClassType.REQUEST);
-        headerType.setMessageId("1");
-        headerType.setNodeId("12");
-        PacketIdsType packetIdsType = objectFactorySmev.createPacketIdsType();
-        PacketIdType packetIdType = objectFactorySmev.createPacketIdType();
-        packetIdType.setMessageId("1");
-        packetIdType.setSubRequestNumber("13");
-        packetIdsType.getId().add(packetIdType);
-        headerType.setPacketIds(packetIdsType);
-        headerType.setTimeStamp(TimeStampUtil.getXMLGregorianCalendar(LocalDateTime.now()));
-        BaseMessageType response = service.createOrders( headerType, baseMessageType);
-        //TODO переписать правильно проверку ответа. xsd нет!
-        Error error = (Error) response.getMessageData().getAppData().getAny().get(0);
-        if (error.getCode() == 0) {
-            return; //все заявки успешно отправлены
-        }
-        for (OrderResult result : error.getOrdersResult().getOrderResults()) {
-            if (!result.getStatus().equals("0")) {
-                return; //тут ошибка в отдельной заявке
+    public void sendOrders(List<Order> orders) throws ElkServiceException {
+        try {
+            BaseMessageType baseMessageType = initBaseMessageToSendOrders(orders);
+            HeaderType headerType = objectFactorySmev.createHeaderType();
+            headerType.setActor("pgu");
+            headerType.setMessageClass(MessageClassType.REQUEST);
+            headerType.setMessageId("1");
+            headerType.setNodeId("12");
+            PacketIdsType packetIdsType = objectFactorySmev.createPacketIdsType();
+            PacketIdType packetIdType = objectFactorySmev.createPacketIdType();
+            packetIdType.setMessageId("1");
+            packetIdType.setSubRequestNumber("13");
+            packetIdsType.getId().add(packetIdType);
+            headerType.setPacketIds(packetIdsType);
+            headerType.setTimeStamp(TimeStampUtil.getXMLGregorianCalendar(LocalDateTime.now()));
+            //TODO переписать headerType - ничего об этом объекте нигде не сказано
+            BaseMessageType response = service.createOrders(headerType, baseMessageType);
+            //TODO переписать правильно проверку ответа. xsd нет!
+            Error error = (Error) response.getMessageData().getAppData().getAny().get(0);
+            if (error.getCode() == 0) {
+                return; //все заявки успешно отправлены
             }
+            for (OrderResult result : error.getOrdersResult().getOrderResults()) {
+                if (!result.getStatus().equals("0")) {
+                    return; //тут ошибка в отдельной заявке
+                }
+            }
+        } catch (ServerSOAPFaultException e) {
+            logger.error("Ошибка на сервере!", e);
+            throw new ElkServiceException(e);
         }
     }
 
@@ -74,45 +82,97 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
      * @param ordersNumber
      */
     @Override
-    public void deleteOrders(List<String> ordersNumber) {
-        BaseMessageType baseMessageType = initBaseMessageToDeleteOrders(ordersNumber);
-        BaseMessageType response = service.deleteOrders(objectFactorySmev.createHeaderType(), baseMessageType);
-        //TODO переписать правильно проверку ответа. xsd нет!
-        ErrorDelete error = (ErrorDelete) response.getMessageData().getAppData().getAny().get(0);
-        if (error.getCode() == 0) {
-            return; //все заявки успешно отправлены
-        }
-        for (DeleteResult result : error.getDeleteResults().getOrderResults()) {
-            if (!result.getStatus().equals("0")) {
-                return; //тут ошибка в отдельной заявке
+    public void deleteOrders(List<String> ordersNumber) throws ElkServiceException {
+        try {
+            BaseMessageType baseMessageType = initBaseMessageToDeleteOrders(ordersNumber);
+            HeaderType headerType = objectFactorySmev.createHeaderType();
+            headerType.setActor("pgu");
+            headerType.setMessageClass(MessageClassType.REQUEST);
+            headerType.setMessageId("1");
+            headerType.setNodeId("12");
+            PacketIdsType packetIdsType = objectFactorySmev.createPacketIdsType();
+            PacketIdType packetIdType = objectFactorySmev.createPacketIdType();
+            packetIdType.setMessageId("1");
+            packetIdType.setSubRequestNumber("13");
+            packetIdsType.getId().add(packetIdType);
+            headerType.setPacketIds(packetIdsType);
+            headerType.setTimeStamp(TimeStampUtil.getXMLGregorianCalendar(LocalDateTime.now()));
+            BaseMessageType response = service.deleteOrders(headerType, baseMessageType);
+            //TODO переписать правильно проверку ответа. xsd нет!
+            ErrorDelete error = (ErrorDelete) response.getMessageData().getAppData().getAny().get(0);
+            if (error.getCode() == 0) {
+                return; //все заявки успешно отправлены
             }
+            for (DeleteResult result : error.getDeleteResults().getOrderResults()) {
+                if (!result.getStatus().equals("0")) {
+                    return; //тут ошибка в отдельной заявке
+                }
+            }
+        } catch (ServerSOAPFaultException e) {
+            logger.error("Ошибка на сервере!", e);
+            throw new ElkServiceException(e);
+
         }
     }
 
     @Override
-    public void updateOrders(List<UpdateOrder> orders) {
-        BaseMessageType baseMessageType = initBaseMessageToUpdateOrders(orders);
-        BaseMessageType response = service.updateOrders(objectFactorySmev.createHeaderType(), baseMessageType);
-        //TODO переписать правильно проверку ответа. xsd нет!
-        Error error = (Error) response.getMessageData().getAppData().getAny().get(0);
-        if (error.getCode() == 0) {
-            return; //все заявки успешно отправлены
-        }
-        for (OrderResult result : error.getOrdersResult().getOrderResults()) {
-            if (!result.getStatus().equals("0")) {
-                return; //тут ошибка в отдельной заявке
+    public void updateOrders(List<UpdateOrder> orders) throws ElkServiceException {
+        try {
+            BaseMessageType baseMessageType = initBaseMessageToUpdateOrders(orders);
+            HeaderType headerType = objectFactorySmev.createHeaderType();
+            headerType.setActor("pgu");
+            headerType.setMessageClass(MessageClassType.REQUEST);
+            headerType.setMessageId("1");
+            headerType.setNodeId("12");
+            PacketIdsType packetIdsType = objectFactorySmev.createPacketIdsType();
+            PacketIdType packetIdType = objectFactorySmev.createPacketIdType();
+            packetIdType.setMessageId("1");
+            packetIdType.setSubRequestNumber("13");
+            packetIdsType.getId().add(packetIdType);
+            headerType.setPacketIds(packetIdsType);
+            headerType.setTimeStamp(TimeStampUtil.getXMLGregorianCalendar(LocalDateTime.now()));
+            BaseMessageType response = service.updateOrders(headerType, baseMessageType);
+            //TODO переписать правильно проверку ответа. xsd нет!
+            Error error = (Error) response.getMessageData().getAppData().getAny().get(0);
+            if (error.getCode() == 0) {
+                return; //все заявки успешно отправлены
             }
+            for (OrderResult result : error.getOrdersResult().getOrderResults()) {
+                if (!result.getStatus().equals("0")) {
+                    return; //тут ошибка в отдельной заявке
+                }
+            }
+        } catch (ServerSOAPFaultException e) {
+            logger.error("Ошибка на сервере!", e);
+            throw new ElkServiceException(e);
         }
     }
 
     @Override
-    public void sendFilesByOrders(List<String> files, String elkNumber, String statusExtId) {
-        BaseMessageType baseMessageType = initBaseMessageToUploadFiles(files, elkNumber, statusExtId);
-        BaseMessageType response = service.uploadFiles(objectFactorySmev.createHeaderType(), baseMessageType);
-        //TODO переписать правильно проверку ответа
-        Error error = (Error) response.getMessageData().getAppData().getAny().get(0);
-        if (error.getCode() == 0) {
-            return; //все заявки успешно отправлены
+    public void sendFilesByOrders(List<String> files, String elkNumber, String statusExtId) throws ElkServiceException {
+        try {
+            BaseMessageType baseMessageType = initBaseMessageToUploadFiles(files, elkNumber, statusExtId);
+            HeaderType headerType = objectFactorySmev.createHeaderType();
+            headerType.setActor("pgu");
+            headerType.setMessageClass(MessageClassType.REQUEST);
+            headerType.setMessageId("1");
+            headerType.setNodeId("12");
+            PacketIdsType packetIdsType = objectFactorySmev.createPacketIdsType();
+            PacketIdType packetIdType = objectFactorySmev.createPacketIdType();
+            packetIdType.setMessageId("1");
+            packetIdType.setSubRequestNumber("13");
+            packetIdsType.getId().add(packetIdType);
+            headerType.setPacketIds(packetIdsType);
+            headerType.setTimeStamp(TimeStampUtil.getXMLGregorianCalendar(LocalDateTime.now()));
+            BaseMessageType response = service.uploadFiles(headerType, baseMessageType);
+            //TODO переписать правильно проверку ответа
+            Error error = (Error) response.getMessageData().getAppData().getAny().get(0);
+            if (error.getCode() == 0) {
+                return; //все заявки успешно отправлены
+            }
+        } catch (ServerSOAPFaultException e) {
+            logger.error("Ошибка на сервере!", e);
+            throw new ElkServiceException(e);
         }
     }
 

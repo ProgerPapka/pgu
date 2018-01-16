@@ -1,5 +1,6 @@
 package webservice.client.IPGUElkSubscribeService;
 
+import exception.ElkServiceException;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -43,12 +44,20 @@ public class SubscriberServiceTest {
 
     @Test
     public void subscribeToGetData() {
-        assertTrue(subscriberService.subscribeToGetData("eyJhbGciOiJSUzI1NiIsInNidCI6ImFjY2VzcyIsInR5cCI6IkpXVCIsInZlciI6MX0.eyJleHAiOjE0NDY3NDM1MDMsInNjb3BlIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcL3Vzcl9pbmY_b2lkPTEwMDAzMjE3NjMmbW9kZT13IiwiaXNzIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcLyIsIm5iZiI6MTQ0NjczOTkwMywidXJuOmVzaWE6c2lkIjoiZDZiYzdmM2MtZTg3Zi00OGQxLTlkNjAtZmMzYjc5YTUwZGQ3IiwidXJuOmVzaWE6c2JqX2lkIjoxMDAwMzIxNzYzLCJjbGllbnRfaWQiOiJQR1UiLCJpYXQiOjE0NDY3Mzk5MDN9.N9v-F2HWxtblEaEH4-ap7P7Jmtp7-0nUXOE32oxT0rwj8-FITR4CDGdYrwlOB1HyhTN85SRsoMtMaZgUAhQyiRUb-oyM0uzBW_so_Bt6teL1EjSGC28RnqVZpwLjKHtpE1IvWM32gN7hb1ClaZQKF4gxYxVEw2awFjNlNK2qOy4Hnt-BzlJmANt0SzwrD6HD5TktVYy0exDeJne9nNupYhOAI5qQbFeUPNTo7TpC3Avbi7BOA4BkdfFeF_DJETJW-8ciz1f61QH6iUH1gFQEBVi12FwzTZtyacLgcag9DhfXObN1W8uuqBKgg227D6EGIMbzfk8s2fKsLC6pCddLgQ",
-                LocalDateTime.now()));
+        try {
+            assertTrue(subscriberService.subscribeToGetData("eyJhbGciOiJSUzI1NiIsInNidCI6ImFjY2VzcyIsInR5cCI6IkpXVCIsInZlciI6MX0.eyJleHAiOjE0NDY3NDM1MDMsInNjb3BlIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcL3Vzcl9pbmY_b2lkPTEwMDAzMjE3NjMmbW9kZT13IiwiaXNzIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcLyIsIm5iZiI6MTQ0NjczOTkwMywidXJuOmVzaWE6c2lkIjoiZDZiYzdmM2MtZTg3Zi00OGQxLTlkNjAtZmMzYjc5YTUwZGQ3IiwidXJuOmVzaWE6c2JqX2lkIjoxMDAwMzIxNzYzLCJjbGllbnRfaWQiOiJQR1UiLCJpYXQiOjE0NDY3Mzk5MDN9.N9v-F2HWxtblEaEH4-ap7P7Jmtp7-0nUXOE32oxT0rwj8-FITR4CDGdYrwlOB1HyhTN85SRsoMtMaZgUAhQyiRUb-oyM0uzBW_so_Bt6teL1EjSGC28RnqVZpwLjKHtpE1IvWM32gN7hb1ClaZQKF4gxYxVEw2awFjNlNK2qOy4Hnt-BzlJmANt0SzwrD6HD5TktVYy0exDeJne9nNupYhOAI5qQbFeUPNTo7TpC3Avbi7BOA4BkdfFeF_DJETJW-8ciz1f61QH6iUH1gFQEBVi12FwzTZtyacLgcag9DhfXObN1W8uuqBKgg227D6EGIMbzfk8s2fKsLC6pCddLgQ",
+                    LocalDateTime.now()));
+        } catch (ElkServiceException e) {
+            logger.error(e);
+        }
     }
 
     @Test
     public void unsubscribeToGetData() {
-        assertTrue(subscriberService.unsubscribeToGetData("eyJhbGciOiJSUzI1NiIsInNidCI6ImFjY2VzcyIsInR5cCI6IkpXVCIsInZlciI6MX0.eyJleHAiOjE0NDY3NDM1MDMsInNjb3BlIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcL3Vzcl9pbmY_b2lkPTEwMDAzMjE3NjMmbW9kZT13IiwiaXNzIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcLyIsIm5iZiI6MTQ0NjczOTkwMywidXJuOmVzaWE6c2lkIjoiZDZiYzdmM2MtZTg3Zi00OGQxLTlkNjAtZmMzYjc5YTUwZGQ3IiwidXJuOmVzaWE6c2JqX2lkIjoxMDAwMzIxNzYzLCJjbGllbnRfaWQiOiJQR1UiLCJpYXQiOjE0NDY3Mzk5MDN9.N9v-F2HWxtblEaEH4-ap7P7Jmtp7-0nUXOE32oxT0rwj8-FITR4CDGdYrwlOB1HyhTN85SRsoMtMaZgUAhQyiRUb-oyM0uzBW_so_Bt6teL1EjSGC28RnqVZpwLjKHtpE1IvWM32gN7hb1ClaZQKF4gxYxVEw2awFjNlNK2qOy4Hnt-BzlJmANt0SzwrD6HD5TktVYy0exDeJne9nNupYhOAI5qQbFeUPNTo7TpC3Avbi7BOA4BkdfFeF_DJETJW-8ciz1f61QH6iUH1gFQEBVi12FwzTZtyacLgcag9DhfXObN1W8uuqBKgg227D6EGIMbzfk8s2fKsLC6pCddLgQ"));
+        try {
+            assertTrue(subscriberService.unsubscribeToGetData("eyJhbGciOiJSUzI1NiIsInNidCI6ImFjY2VzcyIsInR5cCI6IkpXVCIsInZlciI6MX0.eyJleHAiOjE0NDY3NDM1MDMsInNjb3BlIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcL3Vzcl9pbmY_b2lkPTEwMDAzMjE3NjMmbW9kZT13IiwiaXNzIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcLyIsIm5iZiI6MTQ0NjczOTkwMywidXJuOmVzaWE6c2lkIjoiZDZiYzdmM2MtZTg3Zi00OGQxLTlkNjAtZmMzYjc5YTUwZGQ3IiwidXJuOmVzaWE6c2JqX2lkIjoxMDAwMzIxNzYzLCJjbGllbnRfaWQiOiJQR1UiLCJpYXQiOjE0NDY3Mzk5MDN9.N9v-F2HWxtblEaEH4-ap7P7Jmtp7-0nUXOE32oxT0rwj8-FITR4CDGdYrwlOB1HyhTN85SRsoMtMaZgUAhQyiRUb-oyM0uzBW_so_Bt6teL1EjSGC28RnqVZpwLjKHtpE1IvWM32gN7hb1ClaZQKF4gxYxVEw2awFjNlNK2qOy4Hnt-BzlJmANt0SzwrD6HD5TktVYy0exDeJne9nNupYhOAI5qQbFeUPNTo7TpC3Avbi7BOA4BkdfFeF_DJETJW-8ciz1f61QH6iUH1gFQEBVi12FwzTZtyacLgcag9DhfXObN1W8uuqBKgg227D6EGIMbzfk8s2fKsLC6pCddLgQ"));
+        } catch (ElkServiceException e) {
+            logger.error(e);
+        }
     }
 }

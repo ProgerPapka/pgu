@@ -4,6 +4,7 @@ import configuration.AuthToken;
 import configuration.Scope;
 import configuration.Token;
 import data.EsiaUser;
+import exception.ElkServiceException;
 import exception.JsonException;
 import org.apache.log4j.Logger;
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
@@ -36,7 +37,7 @@ public class SubscribeController {
     private boolean isGetTokenFromEsia() {
         try {
             tokenController.getNewToken(authToken.getCode(), authToken.getState(),
-                    Scope.ELK+user.getId(), token, false);
+                    Scope.ELK + user.getId(), token, false);
             return true;
         } catch (OAuthSystemException e) {
             logger.error("OAuth system error", e);
@@ -50,13 +51,21 @@ public class SubscribeController {
 
     public void subscribe(LocalDateTime timestamp) {
         if (isGetTokenFromEsia()) {
-            subscriberService.subscribeToGetData(token.getAccessToken(), timestamp);
+            try {
+                subscriberService.subscribeToGetData(token.getAccessToken(), timestamp);
+            } catch (ElkServiceException e) {
+                logger.error(e);
+            }
         }
     }
 
     public void unsubscribe() {
         if (isGetTokenFromEsia()) {
-            subscriberService.unsubscribeToGetData(token.getAccessToken());
+            try {
+                subscriberService.unsubscribeToGetData(token.getAccessToken());
+            } catch (ElkServiceException e) {
+                logger.error(e);
+            }
         }
     }
 
