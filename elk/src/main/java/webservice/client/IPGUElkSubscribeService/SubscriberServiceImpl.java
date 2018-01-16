@@ -11,6 +11,7 @@ import webservice.objects.elk.elksubscribetype.SubscribeRequest;
 import webservice.objects.smev.*;
 import webservice.objects.elk.Error;
 import webservice.objects.elk.elksubscribetype.UnsubscribeRequest;
+import webservice.objects.time.TimeStampUtil;
 
 
 public class SubscriberServiceImpl implements SubscriberService {
@@ -35,7 +36,7 @@ public class SubscriberServiceImpl implements SubscriberService {
         packetIdType.setSubRequestNumber("13");
         packetIdsType.getId().add(packetIdType);
         header.setPacketIds(packetIdsType);
-        header.setTimeStamp(new XMLGregorianCalendarImpl());
+        header.setTimeStamp(TimeStampUtil.getXMLGregorianCalendar(LocalDateTime.now()));
         BaseMessageType baseMessage = initBaseMessageTypeToSubscrb(token, timestamp);
         BaseMessageType response = service.process(header, baseMessage);
         AppDataType dataResponse = response.getMessageData().getAppData();
