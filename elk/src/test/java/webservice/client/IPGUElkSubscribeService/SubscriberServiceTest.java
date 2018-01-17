@@ -35,10 +35,10 @@ public class SubscriberServiceTest {
             Service service = Service.create(url, qname);
             ElkSubscribeService syncService = service.getPort(ElkSubscribeService.class);
 
-            BindingProvider bindingProvider = (BindingProvider) syncService;
+            /*BindingProvider bindingProvider = (BindingProvider) syncService;
             java.util.List<Handler> handlers = bindingProvider.getBinding().getHandlerChain();
             handlers.add(new MyServiceLogHandler());
-            bindingProvider.getBinding().setHandlerChain(handlers);
+            bindingProvider.getBinding().setHandlerChain(handlers);*/
 
             SubscriberServiceImpl subscriberServ = new SubscriberServiceImpl();
             subscriberServ.setService(syncService);
