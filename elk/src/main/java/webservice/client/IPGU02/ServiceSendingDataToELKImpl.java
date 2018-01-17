@@ -71,7 +71,7 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
                 }
             }
         } catch (ServerSOAPFaultException e) {
-            logger.error("Ошибка на сервере!", e);
+            logger.error("Ошибка!", e);
             throw new ElkServiceException(e);
         }
     }
@@ -109,7 +109,7 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
                 }
             }
         } catch (ServerSOAPFaultException e) {
-            logger.error("Ошибка на сервере!", e);
+            logger.error("Ошибка!", e);
             throw new ElkServiceException(e);
 
         }
@@ -143,7 +143,7 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
                 }
             }
         } catch (ServerSOAPFaultException e) {
-            logger.error("Ошибка на сервере!", e);
+            logger.error("Ошибка!", e);
             throw new ElkServiceException(e);
         }
     }
@@ -171,7 +171,7 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
                 return; //все заявки успешно отправлены
             }
         } catch (ServerSOAPFaultException e) {
-            logger.error("Ошибка на сервере!", e);
+            logger.error("Ошибка!", e);
             throw new ElkServiceException(e);
         }
     }

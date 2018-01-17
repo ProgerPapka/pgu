@@ -49,7 +49,7 @@ public class SubscriberServiceImpl implements SubscriberService {
             Error error = (Error) dataResponse.getAny().get(0);
             return error.getCode() == 0;
         } catch (ServerSOAPFaultException e) {
-            logger.error("Ошибка на сервере!", e);
+            logger.error("Ошибка!", e);
             throw new ElkServiceException(e);
         }
 
@@ -75,7 +75,7 @@ public class SubscriberServiceImpl implements SubscriberService {
             Error error = (Error) response.getMessageData().getAppData().getAny().get(0);
             return error.getCode() == 0;
         } catch (ServerSOAPFaultException e) {
-            logger.error("Ошибка на сервере!", e);
+            logger.error("Ошибка!", e);
             throw new ElkServiceException(e);
         }
 
