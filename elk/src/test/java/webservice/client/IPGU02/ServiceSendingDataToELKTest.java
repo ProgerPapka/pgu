@@ -36,7 +36,7 @@ public class ServiceSendingDataToELKTest {
             Service service = Service.create(url, qname);
             CreateOrderService createOrderService = service.getPort(CreateOrderService.class);
 
-            /*BindingProvider bindingProvider = (BindingProvider) createOrderService;
+/*            BindingProvider bindingProvider = (BindingProvider) createOrderService;
             java.util.List<Handler> handlers = bindingProvider.getBinding().getHandlerChain();
             handlers.add(new MyServiceLogHandler());
             bindingProvider.getBinding().setHandlerChain(handlers);*/
