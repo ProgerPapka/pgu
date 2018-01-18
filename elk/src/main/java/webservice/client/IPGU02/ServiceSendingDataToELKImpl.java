@@ -1,11 +1,12 @@
 package webservice.client.IPGU02;
 
-import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import com.sun.xml.internal.ws.fault.ServerSOAPFaultException;
 import exception.ElkServiceException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import webservice.objects.GeneratorMessageType;
+import webservice.objects.GeneratorSmevHeader;
 import webservice.objects.elk.*;
 import webservice.objects.elk.Error;
 import webservice.objects.archive.FileDescription;
@@ -13,16 +14,12 @@ import webservice.objects.archive.FileDescriptions;
 import webservice.objects.smev.*;
 import webservice.objects.archive.ArchiveDescription;
 import webservice.objects.smev.ObjectFactory;
-import webservice.objects.time.TimeStampUtil;
-
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
@@ -41,23 +38,16 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
     private webservice.objects.elk.ObjectFactory objectFactoryElk;
     @Qualifier("objFactArch")
     private webservice.objects.archive.ObjectFactory objectFactoryArchive;
+    @Autowired
+    private GeneratorMessageType generatorMessageType;
+    @Autowired
+    private GeneratorSmevHeader generatorSmevHeader;
 
     @Override
     public void sendOrders(List<Order> orders) throws ElkServiceException {
         try {
             BaseMessageType baseMessageType = initBaseMessageToSendOrders(orders);
-            HeaderType headerType = objectFactorySmev.createHeaderType();
-            headerType.setActor("pgu");
-            headerType.setMessageClass(MessageClassType.REQUEST);
-            headerType.setMessageId("1");
-            headerType.setNodeId("12");
-            PacketIdsType packetIdsType = objectFactorySmev.createPacketIdsType();
-            PacketIdType packetIdType = objectFactorySmev.createPacketIdType();
-            packetIdType.setMessageId("1");
-            packetIdType.setSubRequestNumber("13");
-            packetIdsType.getId().add(packetIdType);
-            headerType.setPacketIds(packetIdsType);
-            headerType.setTimeStamp(TimeStampUtil.getXMLGregorianCalendar(LocalDateTime.now()));
+            HeaderType headerType = generatorSmevHeader.createHeader("");
             //TODO переписать headerType - ничего об этом объекте нигде не сказано
             BaseMessageType response = service.createOrders(headerType, baseMessageType);
             //TODO переписать правильно проверку ответа. xsd нет!
@@ -85,18 +75,7 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
     public void deleteOrders(List<String> ordersNumber) throws ElkServiceException {
         try {
             BaseMessageType baseMessageType = initBaseMessageToDeleteOrders(ordersNumber);
-            HeaderType headerType = objectFactorySmev.createHeaderType();
-            headerType.setActor("pgu");
-            headerType.setMessageClass(MessageClassType.REQUEST);
-            headerType.setMessageId("1");
-            headerType.setNodeId("12");
-            PacketIdsType packetIdsType = objectFactorySmev.createPacketIdsType();
-            PacketIdType packetIdType = objectFactorySmev.createPacketIdType();
-            packetIdType.setMessageId("1");
-            packetIdType.setSubRequestNumber("13");
-            packetIdsType.getId().add(packetIdType);
-            headerType.setPacketIds(packetIdsType);
-            headerType.setTimeStamp(TimeStampUtil.getXMLGregorianCalendar(LocalDateTime.now()));
+            HeaderType headerType = generatorSmevHeader.createHeader("");
             BaseMessageType response = service.deleteOrders(headerType, baseMessageType);
             //TODO переписать правильно проверку ответа. xsd нет!
             ErrorDelete error = (ErrorDelete) response.getMessageData().getAppData().getAny().get(0);
@@ -119,18 +98,7 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
     public void updateOrders(List<UpdateOrder> orders) throws ElkServiceException {
         try {
             BaseMessageType baseMessageType = initBaseMessageToUpdateOrders(orders);
-            HeaderType headerType = objectFactorySmev.createHeaderType();
-            headerType.setActor("pgu");
-            headerType.setMessageClass(MessageClassType.REQUEST);
-            headerType.setMessageId("1");
-            headerType.setNodeId("12");
-            PacketIdsType packetIdsType = objectFactorySmev.createPacketIdsType();
-            PacketIdType packetIdType = objectFactorySmev.createPacketIdType();
-            packetIdType.setMessageId("1");
-            packetIdType.setSubRequestNumber("13");
-            packetIdsType.getId().add(packetIdType);
-            headerType.setPacketIds(packetIdsType);
-            headerType.setTimeStamp(TimeStampUtil.getXMLGregorianCalendar(LocalDateTime.now()));
+            HeaderType headerType = generatorSmevHeader.createHeader("");
             BaseMessageType response = service.updateOrders(headerType, baseMessageType);
             //TODO переписать правильно проверку ответа. xsd нет!
             Error error = (Error) response.getMessageData().getAppData().getAny().get(0);
@@ -152,18 +120,7 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
     public void sendFilesByOrders(List<String> files, String elkNumber, String statusExtId) throws ElkServiceException {
         try {
             BaseMessageType baseMessageType = initBaseMessageToUploadFiles(files, elkNumber, statusExtId);
-            HeaderType headerType = objectFactorySmev.createHeaderType();
-            headerType.setActor("pgu");
-            headerType.setMessageClass(MessageClassType.REQUEST);
-            headerType.setMessageId("1");
-            headerType.setNodeId("12");
-            PacketIdsType packetIdsType = objectFactorySmev.createPacketIdsType();
-            PacketIdType packetIdType = objectFactorySmev.createPacketIdType();
-            packetIdType.setMessageId("1");
-            packetIdType.setSubRequestNumber("13");
-            packetIdsType.getId().add(packetIdType);
-            headerType.setPacketIds(packetIdsType);
-            headerType.setTimeStamp(TimeStampUtil.getXMLGregorianCalendar(LocalDateTime.now()));
+            HeaderType headerType = generatorSmevHeader.createHeader("");
             BaseMessageType response = service.uploadFiles(headerType, baseMessageType);
             //TODO переписать правильно проверку ответа
             Error error = (Error) response.getMessageData().getAppData().getAny().get(0);
@@ -194,6 +151,14 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
 
     public void setObjectFactoryArchive(webservice.objects.archive.ObjectFactory objectFactoryArchive) {
         this.objectFactoryArchive = objectFactoryArchive;
+    }
+
+    public void setGeneratorMessageType(GeneratorMessageType generatorMessageType) {
+        this.generatorMessageType = generatorMessageType;
+    }
+
+    public void setGeneratorSmevHeader(GeneratorSmevHeader generatorSmevHeader) {
+        this.generatorSmevHeader = generatorSmevHeader;
     }
 
     private BaseMessageType initBaseMessageToUploadFiles(List<String> nameFiles,
@@ -281,44 +246,13 @@ public class ServiceSendingDataToELKImpl implements ServiceSendingDataToELK {
         return initBaseMessageType(appDataType, null);
     }
 
+
+
     private BaseMessageType initBaseMessageType(AppDataType appDataType,
                                                 AppDocumentType documentType) {
         BaseMessageType baseMessage = objectFactorySmev.createBaseMessageType();
         //message type
-        String senderCode = "IPGU01001"; //эти данные взяты с примера запроса
-        String senderName = "ЕПГУ";
-        String recipientCode = "IPGU01001";
-        String recipientName = "ЕПГУ";
-        String originatorCode = "IPGU01001";
-        String originatorName = "ЕПГУ";
-        String serviceName = "ElkSubscribeServiceV25";
-        OrgExternalType sender = objectFactorySmev.createOrgExternalType();
-        OrgExternalType recipient = objectFactorySmev.createOrgExternalType();
-        OrgExternalType originator = objectFactorySmev.createOrgExternalType();
-        LocalDateTime dateTime = LocalDateTime.now();
-        XMLGregorianCalendar calendar = XMLGregorianCalendarImpl.createDateTime(
-                dateTime.getYear(),
-                dateTime.getMonthValue(),
-                dateTime.getDayOfMonth(),
-                dateTime.getHour(),
-                dateTime.getMinute(),
-                dateTime.getSecond()
-        );
-        MessageType messageType = objectFactorySmev.createMessageType();
-        sender.setCode(senderCode);
-        sender.setName(senderName);
-        messageType.setSender(sender);
-        recipient.setName(recipientName);
-        recipient.setCode(recipientCode);
-        messageType.setRecipient(recipient);
-        originator.setCode(originatorCode);
-        originator.setName(originatorName);
-        messageType.setOriginator(originator);
-        messageType.setServiceName(serviceName);
-        messageType.setTypeCode(TypeCodeType.GSRV);
-        messageType.setStatus(StatusType.REQUEST);
-        messageType.setDate(calendar);
-        messageType.setExchangeType("1");
+        MessageType messageType = generatorMessageType.createMessageTypeToSubscribe();
         baseMessage.setMessage(messageType);
         //message data
         MessageDataType messageData = objectFactorySmev.createMessageDataType();
